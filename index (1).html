@@ -631,9 +631,11 @@ function openDriveFolder(){
 }
 
 function confirmUpload(){
-  var t=teachers.find(function(x){return x.id===currentTeacherId;});
-  var weekLabel=weeks[1].split('—')[0].trim();
-  var today=new Date().toISOString().split('T')[0];
+  const t=teachers.find(function(x){return x.id===currentTeacherId;});
+  const hash=window.location.hash;
+  const weekParam=hash.includes('week=')? decodeURIComponent(hash.split('week=')[1]) : weeks[1];
+  const weekLabel=weekParam.split('—')[0].trim();
+  const today=new Date().toISOString().split('T')[0];
   submissions.push({
     teacherId:currentTeacherId,
     teacherName:t?t.name:'معلم',
