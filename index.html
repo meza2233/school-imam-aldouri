@@ -945,7 +945,10 @@ function showTab(name,btn){
   document.getElementById('tab'+name.charAt(0).toUpperCase()+name.slice(1)).classList.remove('hidden');
   document.querySelectorAll('.nav-tab').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
-  if(name==='circulars'){renderCirculars();renderCircTargets();}
+  if(name==='circulars'){
+    circSelectedTargets=[];
+    setTimeout(function(){renderCircTargets();renderCirculars();},0);
+  }
   if(name==='send'){
     var sel=document.getElementById('sendWeekSelect');
     sel.innerHTML=DEFAULT_WEEKS.map(function(w,i){
