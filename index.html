@@ -471,24 +471,32 @@ tr:hover td{background:var(--green-bg)}
         </div>
         <div class="form-group" style="margin-bottom:10px">
           <label style="font-size:12px;color:#555;display:block;margin-bottom:6px">الموجه إلى</label>
-          <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;align-items:center'>
-            <select id="circFilterRole" onchange="filterCircTargets()" style="padding:6px 10px;border:1.5px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;outline:none">
-              <option value="">كل المهام</option>
-              <option>معلم</option>
-              <option>وكيل</option>
-              <option>وكيل الشؤون التعليمية</option>
-              <option>وكيل شؤون الطلاب</option>
-              <option>الموجه الطلابي</option>
-              <option>رائد النشاط</option>
-              <option>مسؤول الأمن والسلامة</option>
-            </select>
-            <select id="circFilterName" onchange="filterCircTargets()" style="padding:6px 10px;border:1.5px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;outline:none">
-              <option value="">كل المنتسبين</option>
-            </select>
-            <button class="btn-sm btn-sm-gold" onclick="selectAllCircTargets()">تحديد الكل</button>
-            <button class="btn-sm btn-sm-outline" onclick="deselectAllCircTargets()">إلغاء التحديد</button>
+          <div style="display:grid;grid-template-columns:1fr 1fr auto auto;gap:8px;align-items:end;margin-bottom:8px">
+            <div>
+              <label style="font-size:11px;color:#888;display:block;margin-bottom:3px">الاسم</label>
+              <select id="circAddName" style="width:100%;padding:7px 10px;border:1.5px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;outline:none">
+                <option value="">اختر المنتسب</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:11px;color:#888;display:block;margin-bottom:3px">المهمة</label>
+              <select id="circAddRole" style="width:100%;padding:7px 10px;border:1.5px solid #ddd;border-radius:6px;font-size:13px;font-family:inherit;outline:none">
+                <option value="">اختر المهمة</option>
+                <option>معلم</option>
+                <option>وكيل</option>
+                <option>وكيل الشؤون التعليمية</option>
+                <option>وكيل شؤون الطلاب</option>
+                <option>الموجه الطلابي</option>
+                <option>رائد النشاط</option>
+                <option>مسؤول الأمن والسلامة</option>
+              </select>
+            </div>
+            <button class="btn-sm btn-sm-gold" style="height:34px" onclick="addCircTarget()">إضافة</button>
+            <button class="btn-sm btn-sm-outline" style="height:34px" onclick="addAllCircTargets()">إضافة الكل</button>
           </div>
-          <div id="circTargetsList" style="max-height:200px;overflow-y:auto;border:1.5px solid #ddd;border-radius:8px;padding:8px;background:#fafafa"></div>
+          <div id="circTargetsList" style="border:1.5px solid #ddd;border-radius:8px;padding:6px;background:#fafafa;min-height:40px">
+            <p id="circTargetsEmpty" style="color:#bbb;font-size:12px;text-align:center;padding:6px">لم يتم إضافة أي مستلم بعد</p>
+          </div>
         </div>
         <button class="btn-sm btn-sm-gold" onclick="addCircular()">إضافة التعميم وإرساله</button>
       </div>
