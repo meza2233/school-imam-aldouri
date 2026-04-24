@@ -251,7 +251,35 @@ tr:hover td{background:var(--gb)}
   </div>
 </div>
 
-<!-- MODAL CHANGE PASS -->
+<!-- MODAL FIRST LOGIN -->
+<div class="modal-bg hidden" id="mdlFirstLogin">
+  <div class="modal">
+    <h2>🎉 مرحباً بك في منصة ناظر!</h2>
+    <p class="modal-desc">لحماية حسابك، يرجى تغيير بيانات الدخول قبل المتابعة</p>
+    <div class="form-g">
+      <label>اسم المستخدم الجديد (كود المدرسة)</label>
+      <input type="text" id="flUsername" placeholder="أدخل اسم مستخدم جديد" style="text-transform:uppercase">
+      <div style="font-size:11px;color:var(--tl);margin-top:4px">يجب أن يكون 4 أحرف أو أكثر</div>
+    </div>
+    <div class="form-g">
+      <label>كلمة المرور الجديدة</label>
+      <input type="password" id="flNewPass" placeholder="••••••" oninput="checkPassStrength()">
+      <div id="passStrength" style="margin-top:6px;font-size:12px;display:none">
+        <div style="background:#f0f0f0;border-radius:10px;height:6px;margin-bottom:4px">
+          <div id="passStrengthBar" style="height:100%;border-radius:10px;transition:all 0.3s;width:0%"></div>
+        </div>
+        <span id="passStrengthText"></span>
+      </div>
+    </div>
+    <div class="form-g">
+      <label>تأكيد كلمة المرور</label>
+      <input type="password" id="flConPass" placeholder="••••••">
+    </div>
+    <div class="err" id="flErr" style="display:none"></div>
+    <button class="btn btn-g btn-full" onclick="saveFirstLogin()">حفظ وبدء الاستخدام</button>
+    <p style="font-size:11px;color:var(--tl);text-align:center;margin-top:10px">⚠️ احتفظ ببيانات الدخول الجديدة في مكان آمن</p>
+  </div>
+</div>
 <div class="modal-bg hidden" id="mdlChangePass">
   <div class="modal">
     <button class="modal-close" onclick="hideModal('mdlChangePass')">✕</button>
@@ -713,7 +741,11 @@ function afterRegister(){
   hideModal('mdlRegister');
   document.getElementById('regForm').classList.remove('hidden');
   document.getElementById('regSuccess').classList.add('hidden');
-  showDashboard();
+  cur.firstLogin=true;
+  var idx=schools.findIndex(function(s){return s.code===cur.code;});
+  if(idx>-1){schools[idx]=cur;setSchools(schools);}
+  document.getElementById('flUsername').value=cur.code;
+  showModal('mdlFirstLogin');
 }
 
 // ====== LOGIN ======
@@ -722,8 +754,19 @@ function doLogin(){
   var pass=document.getElementById('lPass').value.trim();
   var err=document.getElementById('loginErr');
   var school=schools.find(function(s){return s.code===code&&s.pass===pass;});
-  if(school){err.style.display='none';cur=school;hideModal('mdlLogin');showDashboard();}
-  else{err.style.display='block';}
+  if(school){
+    err.style.display='none';
+    cur=school;
+    hideModal('mdlLogin');
+    if(school.firstLogin){
+      document.getElementById('flUsername').value=cur.code;
+      showModal('mdlFirstLogin');
+    } else {
+      showDashboard();
+    }
+  } else {
+    err.style.display='block';
+  }
 }
 document.getElementById('lPass').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
 
