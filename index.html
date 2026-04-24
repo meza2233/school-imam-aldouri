@@ -1017,7 +1017,7 @@ function sendCircLinks(circId){
   var targets=d.teachers.filter(function(t){return t.phone&&c.targetIds&&c.targetIds.includes(t.id);});
   if(!targets.length){alert('لا يوجد مستلمون بأرقام واتساب');return;}
   targets.forEach(function(t){
-    var link=location.href.split('#')[0]+'#circ='+cur.code+'-'+circId+'-'+t.id;
+    var link=location.href.split('#')[0]+'#circ='+cur.code+'|'+circId+'|'+t.id;
     var msg=encodeURIComponent('السلام عليكم '+t.name+' ،\nيرجى الاطلاع على التعميم:\n'+c.title+'\n'+link+'\nإدارة '+cur.name);
     window.open('https://wa.me/'+t.phone.replace(/^0/,'966')+'?text='+msg,'_blank');
   });
@@ -1149,7 +1149,8 @@ function showCircularPage(sCode,cId,tId){
 
 function openCircFile(){
   var hash=location.hash;
-  var parts=hash.split('#circ=')[1].split('-');
+  var raw=hash.split('#circ=')[1];
+  var parts=raw.split('|');
   var sCode=parts[0];
   var cId=parseInt(parts[1]);
   var d=getSD(sCode)||{circulars:[]};
@@ -1163,7 +1164,8 @@ function openCircFile(){
 
 function confirmView(){
   var hash=location.hash;
-  var parts=hash.split('#circ=')[1].split('-');
+  var raw=hash.split('#circ=')[1];
+  var parts=raw.split('|');
   var sCode=parts[0];
   var cId=parseInt(parts[1]);
   var tId=parseInt(parts[2]);
@@ -1191,7 +1193,7 @@ function init(){
     var wp=hash.includes('week=')?decodeURIComponent(hash.split('week=')[1]):WEEKS[0];
     showUploadPage(sc,ti,wp);
   } else if(hash.startsWith('#circ=')){
-    var cp=hash.split('#circ=')[1].split('-');
+    var cp=hash.split('#circ=')[1].split('|');
     showCircularPage(cp[0],parseInt(cp[1]),parseInt(cp[2]));
   } else {
     showPage('pgLanding');
