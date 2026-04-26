@@ -1095,7 +1095,7 @@ function renderAdminReport(){
 function exportAdminReport(){
   var today=new Date().toLocaleDateString('ar-SA');
   var html='<!DOCTYPE html><html dir="rtl" lang="ar"><head><meta charset="UTF-8"><style>body{font-family:Arial;direction:rtl;padding:20px}h2{text-align:center;color:#1a6e3c;border-bottom:3px solid #3a9e6e;padding-bottom:8px}.meta{text-align:center;color:#555;font-size:13px;margin-bottom:20px}table{width:100%;border-collapse:collapse;font-size:12px}th{background:#1a6e3c;color:#fff;padding:8px;text-align:right}td{padding:6px 8px;border:1px solid #ddd}tr:nth-child(even) td{background:#f9f9f9}</style></head><body>'+
-  '<h2>منصة خطة الدروس الأسبوعية</h2><div class="meta">تقرير المدارس المسجلة — '+today+'</div>'+
+  '<h2>منصة رابط للإدارة المدرسية</h2><div class="meta">تقرير المدارس المسجلة — '+today+'</div>'+
   '<table><thead><tr><th>#</th><th>المدرسة</th><th>الكود</th><th>المنطقة</th><th>المرحلة</th><th>المدير</th><th>المنتسبون</th><th>الخطط</th><th>تاريخ التسجيل</th></tr></thead><tbody>'+
   schools.map(function(s,i){
     var d=getSD(s.code)||{teachers:[],submissions:[]};
