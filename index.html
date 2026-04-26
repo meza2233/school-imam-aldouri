@@ -220,34 +220,29 @@ tr:hover td{background:var(--gb)}
     <button class="modal-close" onclick="hideModal('mdlRegister')">✕</button>
     <h2>تسجيل مدرسة جديدة</h2>
     <p class="modal-desc">أدخل بيانات مدرستك للانضمام إلى المنصة مجاناً</p>
-    <div id="regForm">
-      <div class="form-g"><label>اسم المدرسة كاملاً</label><input type="text" id="rName" placeholder="مثال: متوسطة الإمام الدوري لتحفيظ القرآن الكريم"></div>
-      <div class="form-row">
-        <div class="form-g"><label>المنطقة التعليمية</label><select id="rRegion"><option value="">اختر</option><option>الرياض</option><option>مكة المكرمة</option><option>المدينة المنورة</option><option>القصيم</option><option>الشرقية</option><option>عسير</option><option>تبوك</option><option>حائل</option><option>الحدود الشمالية</option><option>جازان</option><option>نجران</option><option>الباحة</option><option>الجوف</option></select></div>
-        <div class="form-g"><label>المرحلة الدراسية</label><select id="rStage"><option value="">اختر</option><option>ابتدائية</option><option>متوسطة</option><option>ثانوية</option></select></div>
-      </div>
-      <div class="form-row">
-        <div class="form-g"><label>نوع المدرسة</label><select id="rGender"><option value="">اختر</option><option>بنين</option><option>بنات</option></select></div>
-        <div class="form-g"><label>اسم مدير المدرسة</label><input type="text" id="rDirector" placeholder="الاسم كاملاً"></div>
-      </div>
-      <div class="form-row">
-        <div class="form-g"><label>رقم الجوال</label><input type="text" id="rPhone" placeholder="05xxxxxxxx"></div>
-        <div class="form-g"><label>البريد الإلكتروني</label><input type="email" id="rEmail" placeholder="example@school.sa"></div>
-      </div>
-      <div class="err" id="regErr">يرجى تعبئة جميع الحقول</div>
-      <button class="btn btn-g btn-full" onclick="doRegister()">تسجيل المدرسة</button>
-      <div class="divider">أو</div>
-      <button class="btn btn-o btn-full" onclick="hideModal('mdlRegister');showModal('mdlLogin')">لديك حساب؟ سجّل دخولك</button>
+    <div class="form-g"><label>اسم المدرسة كاملاً</label><input type="text" id="rName" placeholder="مثال: متوسطة الإمام الدوري لتحفيظ القرآن الكريم"></div>
+    <div class="form-row">
+      <div class="form-g"><label>المنطقة التعليمية</label><select id="rRegion"><option value="">اختر</option><option>الرياض</option><option>مكة المكرمة</option><option>المدينة المنورة</option><option>القصيم</option><option>الشرقية</option><option>عسير</option><option>تبوك</option><option>حائل</option><option>الحدود الشمالية</option><option>جازان</option><option>نجران</option><option>الباحة</option><option>الجوف</option></select></div>
+      <div class="form-g"><label>المرحلة الدراسية</label><select id="rStage"><option value="">اختر</option><option>ابتدائية</option><option>متوسطة</option><option>ثانوية</option></select></div>
     </div>
-    <div class="hidden" id="regSuccess" style="text-align:center">
-      <div style="font-size:2.5rem;margin-bottom:8px">🎉</div>
-      <h3 style="color:var(--gd);margin-bottom:8px">تم التسجيل بنجاح!</h3>
-      <p style="font-size:13px;color:#666;margin-bottom:10px">بيانات دخولك:</p>
-      <div class="pass-box"><div class="lbl">كود المدرسة</div><div class="val" id="newCode"></div></div>
-      <div class="pass-box"><div class="lbl">كلمة المرور المبدئية</div><div class="val" id="newPass"></div></div>
-      <p style="color:var(--red);font-size:12px;margin:8px 0">⚠️ احتفظ بهذه البيانات</p>
-      <button class="btn btn-g btn-full" onclick="afterRegister()">الدخول للوحة التحكم</button>
+    <div class="form-row">
+      <div class="form-g"><label>نوع المدرسة</label><select id="rGender"><option value="">اختر</option><option>بنين</option><option>بنات</option></select></div>
+      <div class="form-g"><label>اسم مدير المدرسة</label><input type="text" id="rDirector" placeholder="الاسم كاملاً"></div>
     </div>
+    <div class="form-row">
+      <div class="form-g"><label>رقم الجوال</label><input type="text" id="rPhone" placeholder="05xxxxxxxx"></div>
+      <div class="form-g"><label>البريد الإلكتروني</label><input type="email" id="rEmail" placeholder="example@school.sa"></div>
+    </div>
+    <div style="height:1px;background:var(--bd);margin:12px 0"></div>
+    <div class="form-g"><label>اسم المستخدم (الرقم الوزاري أو اختر اسماً)</label><input type="text" id="rUser" placeholder="مثال: 1234567890"></div>
+    <div class="form-row">
+      <div class="form-g"><label>كلمة المرور</label><input type="password" id="rPass" placeholder="••••••"></div>
+      <div class="form-g"><label>تأكيد كلمة المرور</label><input type="password" id="rPassCon" placeholder="••••••"></div>
+    </div>
+    <div class="err" id="regErr" style="display:none">يرجى تعبئة جميع الحقول</div>
+    <button class="btn btn-g btn-full" onclick="doRegister()">إضافة المدرسة والدخول</button>
+    <div class="divider">أو</div>
+    <button class="btn btn-o btn-full" onclick="hideModal('mdlRegister');showModal('mdlLogin')">لديك حساب؟ سجّل دخولك</button>
   </div>
 </div>
 
@@ -267,34 +262,6 @@ tr:hover td{background:var(--gb)}
 </div>
 
 <!-- MODAL FIRST LOGIN -->
-<div class="modal-bg hidden" id="mdlFirstLogin">
-  <div class="modal">
-    <h2>🎉 مرحباً بك في منصة رابط!</h2>
-    <p class="modal-desc">لحماية حسابك، يرجى تغيير بيانات الدخول قبل المتابعة</p>
-    <div class="form-g">
-      <label>اسم المستخدم الجديد (كود المدرسة)</label>
-      <input type="text" id="flUsername" placeholder="أدخل اسم مستخدم جديد" style="text-transform:uppercase">
-      <div style="font-size:11px;color:var(--tl);margin-top:4px">يجب أن يكون 4 أحرف أو أكثر</div>
-    </div>
-    <div class="form-g">
-      <label>كلمة المرور الجديدة</label>
-      <input type="password" id="flNewPass" placeholder="••••••" oninput="checkPassStrength()">
-      <div id="passStrength" style="margin-top:6px;font-size:12px;display:none">
-        <div style="background:#f0f0f0;border-radius:10px;height:6px;margin-bottom:4px">
-          <div id="passStrengthBar" style="height:100%;border-radius:10px;transition:all 0.3s;width:0%"></div>
-        </div>
-        <span id="passStrengthText"></span>
-      </div>
-    </div>
-    <div class="form-g">
-      <label>تأكيد كلمة المرور</label>
-      <input type="password" id="flConPass" placeholder="••••••">
-    </div>
-    <div class="err" id="flErr" style="display:none"></div>
-    <button class="btn btn-g btn-full" onclick="saveFirstLogin()">حفظ وبدء الاستخدام</button>
-    <p style="font-size:11px;color:var(--tl);text-align:center;margin-top:10px">⚠️ احتفظ ببيانات الدخول الجديدة في مكان آمن</p>
-  </div>
-</div>
 <div class="modal-bg hidden" id="mdlSendWa">
   <div class="modal" style="max-width:520px">
     <button class="modal-close" onclick="hideModal('mdlSendWa')">✕</button>
@@ -884,32 +851,41 @@ function doRegister(){
   var director=document.getElementById('rDirector').value.trim();
   var phone=document.getElementById('rPhone').value.trim();
   var email=document.getElementById('rEmail').value.trim();
+  var user=document.getElementById('rUser').value.trim();
+  var pass=document.getElementById('rPass').value.trim();
+  var passCon=document.getElementById('rPassCon').value.trim();
   var err=document.getElementById('regErr');
-  if(!name||!region||!stage||!gender||!director||!phone){err.style.display='block';return;}
   err.style.display='none';
+  if(!name||!region||!stage||!gender||!director||!phone){
+    err.style.display='block';err.textContent='يرجى تعبئة جميع بيانات المدرسة';return;
+  }
+  if(!user||user.length<3){
+    err.style.display='block';err.textContent='اسم المستخدم يجب أن يكون 3 أحرف أو أكثر';return;
+  }
+  if(schools.find(function(s){return (s.user||s.code)===user;})){
+    err.style.display='block';err.textContent='اسم المستخدم مستخدم من قبل، اختر اسماً آخر';return;
+  }
+  if(!pass||pass.length<4){
+    err.style.display='block';err.textContent='كلمة المرور يجب أن تكون 4 أحرف أو أكثر';return;
+  }
+  if(pass!==passCon){
+    err.style.display='block';err.textContent='كلمتا المرور غير متطابقتين';return;
+  }
   var code='SCH-'+Math.random().toString(36).substr(2,4).toUpperCase();
   while(schools.find(function(s){return s.code===code;})){code='SCH-'+Math.random().toString(36).substr(2,4).toUpperCase();}
-  var pass=Math.floor(1000+Math.random()*9000).toString();
-  var school={code:code,name:name,region:region,stage:stage,gender:gender,director:director,phone:phone,email:email,pass:pass,createdAt:new Date().toISOString()};
-  schools.push(school);setSchools(schools);
+  var school={code:code,user:user,name:name,region:region,stage:stage,gender:gender,director:director,phone:phone,email:email,pass:pass,createdAt:new Date().toISOString()};
+  schools.push(school);
+  setSchools(schools);
   initSD(code);
-  document.getElementById('newCode').textContent=code;
-  document.getElementById('newPass').textContent=pass;
-  document.getElementById('regForm').classList.add('hidden');
-  document.getElementById('regSuccess').classList.remove('hidden');
   cur=school;
-  updateLandingStats();
-}
-
-function afterRegister(){
   hideModal('mdlRegister');
-  document.getElementById('regForm').classList.remove('hidden');
-  document.getElementById('regSuccess').classList.add('hidden');
-  cur.firstLogin=true;
-  var idx=schools.findIndex(function(s){return s.code===cur.code;});
-  if(idx>-1){schools[idx]=cur;setSchools(schools);}
-  document.getElementById('flUsername').value=cur.code;
-  showModal('mdlFirstLogin');
+  // إعادة تعيين النموذج
+  ['rName','rDirector','rPhone','rEmail','rUser','rPass','rPassCon'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('rRegion').value='';
+  document.getElementById('rStage').value='';
+  document.getElementById('rGender').value='';
+  updateLandingStats();
+  showDashboard();
 }
 
 // ====== LOGIN ======
@@ -924,12 +900,7 @@ function doLogin(){
     if(school){
       cur=school;
       hideModal('mdlLogin');
-      if(school.firstLogin){
-        document.getElementById('flUsername').value=cur.code;
-        showModal('mdlFirstLogin');
-      } else {
-        showDashboard();
-      }
+      showDashboard();
     } else {
       err.style.display='block';
     }
