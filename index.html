@@ -205,8 +205,6 @@ tr:hover td{background:var(--gb)}
   </div>
   <div class="stats-bar">
     <div><div class="stat-n" id="landSchools">0</div><div class="stat-l">مدرسة مسجلة</div></div>
-    <div><div class="stat-n" id="landTeachers">0</div><div class="stat-l">معلم في المنصة</div></div>
-    <div><div class="stat-n" id="landPlans">0</div><div class="stat-l">خطة مرفوعة</div></div>
     <div><div class="stat-n">مجاني</div><div class="stat-l">للمرحلة الحالية</div></div>
   </div>
   <div class="land-footer">
@@ -906,11 +904,7 @@ function hideModal(id){document.getElementById(id).classList.add('hidden');}
 
 // ====== LANDING ======
 function updateLandingStats(){
-  var t=0,p=0;
-  schools.forEach(function(s){var d=getSD(s.code);if(d){t+=d.teachers.length;p+=d.submissions.length;}});
   document.getElementById('landSchools').textContent=schools.length;
-  document.getElementById('landTeachers').textContent=t;
-  document.getElementById('landPlans').textContent=p;
 }
 
 // ====== REGISTER ======
