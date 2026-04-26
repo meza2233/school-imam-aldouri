@@ -848,50 +848,6 @@ var cur=null; // current school
 var circTargets=[]; // selected circular targets
 var survTargets=[]; // selected survey targets
 
-// ====== INIT DORI ======
-(function(){
-  if(!schools.find(function(s){return s.code==='SCH-DORI';})){
-    schools.push({code:'SCH-DORI',name:'متوسطة الإمام الدوري لتحفيظ القرآن الكريم',region:'الرياض',stage:'متوسطة',gender:'بنين',director:'بندر عبدالله البصير',phone:'0547889932',email:'meaz2011@gmail.com',pass:'AAss1122@',createdAt:new Date().toISOString()});
-    // localStorage فقط — Firebase تُحدَّث لاحقاً في loadFromFirebase
-    localStorage.setItem('pt_schools',JSON.stringify(schools));
-  }
-  var d=getSD('SCH-DORI');
-  if(!d||!d.teachers||d.teachers.length===0){
-    var nd={teachers:[],submissions:[],circulars:[],driveUrl:'https://drive.google.com/drive/folders/18Dz8_kcHeaIz6SInK9deflTdUpHrw0f2?usp=drive_link'};
-    var ts=[
-      {id:1,name:'خالد أحمد مجرشي',phone:'0509067660',subject:'دراسات إسلامية',role:'معلم',initials:'خم'},
-      {id:2,name:'خالد محسن العويني',phone:'0505241787',subject:'دراسات إسلامية',role:'معلم',initials:'خع'},
-      {id:3,name:'محمد اليعيش',phone:'0562769990',subject:'دراسات إسلامية',role:'معلم',initials:'مي'},
-      {id:4,name:'عمر احمد بانبيلة',phone:'0506515499',subject:'دراسات إسلامية',role:'معلم',initials:'عب'},
-      {id:5,name:'عبدالغني القصير',phone:'0590167111',subject:'دراسات إسلامية',role:'معلم',initials:'عق'},
-      {id:6,name:'سلطان علي العويني',phone:'0566066751',subject:'دراسات إسلامية',role:'معلم',initials:'سع'},
-      {id:7,name:'جميل الغامدي',phone:'',subject:'دراسات إسلامية',role:'معلم',initials:'جغ'},
-      {id:8,name:'أحمد الشهري',phone:'0506119920',subject:'دراسات إسلامية',role:'معلم',initials:'أش'},
-      {id:9,name:'إبراهيم الدوسري',phone:'0566221070',subject:'لغة عربية',role:'معلم',initials:'إد'},
-      {id:10,name:'محمد عبدالله البديوي',phone:'0505187891',subject:'لغة عربية',role:'معلم',initials:'مب'},
-      {id:11,name:'محمد سالم اليميني',phone:'0558319463',subject:'لغة عربية',role:'معلم',initials:'مي'},
-      {id:12,name:'أحمد حيدر',phone:'0583644866',subject:'اجتماعيات',role:'معلم',initials:'أح'},
-      {id:13,name:'نواف الربيع',phone:'0568856675',subject:'اجتماعيات',role:'معلم',initials:'نر'},
-      {id:14,name:'محمد المالكي',phone:'0598479605',subject:'رياضيات',role:'معلم',initials:'مم'},
-      {id:15,name:'تركي المسلم',phone:'0567584853',subject:'رياضيات',role:'معلم',initials:'تم'},
-      {id:16,name:'عبدالرحمن اللهيمي',phone:'0546388467',subject:'رياضيات',role:'معلم',initials:'عل'},
-      {id:17,name:'خالد المطيري',phone:'0508078464',subject:'رياضيات',role:'معلم',initials:'خط'},
-      {id:18,name:'حسين الحسين',phone:'0554228882',subject:'علوم',role:'معلم',initials:'حح'},
-      {id:19,name:'إبراهيم ضياء الحق',phone:'0549988014',subject:'علوم',role:'معلم',initials:'إض'},
-      {id:20,name:'وديع الحجاجي',phone:'0560719471',subject:'علوم',role:'معلم',initials:'وح'},
-      {id:21,name:'عدنان الشهري',phone:'0569337752',subject:'إنجليزي',role:'معلم',initials:'عش'},
-      {id:22,name:'عبدالإله الشهري',phone:'',subject:'إنجليزي',role:'معلم',initials:'عش'},
-      {id:23,name:'محمد عيظة الزهراني',phone:'0547889932',subject:'مهارات رقمية',role:'معلم',initials:'مز'},
-      {id:24,name:'عبدالرحمن العبلان',phone:'0540070388',subject:'فنية',role:'معلم',initials:'عع'},
-      {id:25,name:'فيصل الجوير',phone:'0559918343',subject:'رياضية',role:'معلم',initials:'فج'},
-    ];
-    nd.teachers=ts;
-    if(d&&d.submissions) nd.submissions=d.submissions;
-    if(d&&d.circulars) nd.circulars=d.circulars;
-    // localStorage فقط — Firebase تُحدَّث في loadFromFirebase
-    localStorage.setItem('pt_SCH-DORI',JSON.stringify(nd));
-  }
-})();
 
 // ====== PAGES ======
 function showPage(id){
