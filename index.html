@@ -765,8 +765,16 @@ function normalizeSD(d){
   if(!d)return null;
   d.teachers=toArr(d.teachers);
   d.submissions=toArr(d.submissions);
-  d.circulars=toArr(d.circulars);
-  d.surveys=toArr(d.surveys);
+  d.circulars=toArr(d.circulars).map(function(c){
+    c.targetIds=toArr(c.targetIds).map(Number);
+    c.views=toArr(c.views);
+    return c;
+  });
+  d.surveys=toArr(d.surveys).map(function(s){
+    s.targetIds=toArr(s.targetIds).map(Number);
+    s.completions=toArr(s.completions);
+    return s;
+  });
   return d;
 }
 
@@ -1594,7 +1602,7 @@ function sendCircLinks(circId){
   var d=getSD(cur.code);
   var c=d.circulars.find(function(x){return x.id===circId;});
   if(!c) return;
-  var targets=d.teachers.filter(function(t){return t.phone&&c.targetIds&&c.targetIds.includes(t.id);});
+  var targets=d.teachers.filter(function(t){return t.phone&&c.targetIds&&c.targetIds.some(function(id){return id==t.id;});});
   if(!targets.length){alert('لا يوجد مستلمون بأرقام واتساب');return;}
   var items=targets.map(function(t){
     var link=location.href.split('#')[0]+'#circ='+cur.code+'|'+circId+'|'+t.id;
@@ -1734,7 +1742,7 @@ function sendSurveyLinks(survId){
   var d=getSD(cur.code);
   var s=d.surveys.find(function(x){return x.id===survId;});
   if(!s) return;
-  var targets=d.teachers.filter(function(t){return t.phone&&s.targetIds&&s.targetIds.includes(t.id);});
+  var targets=d.teachers.filter(function(t){return t.phone&&s.targetIds&&s.targetIds.some(function(id){return id==t.id;});});
   if(!targets.length){alert('لا يوجد مستلمون بأرقام واتساب');return;}
   var items=targets.map(function(t){
     var link=location.href.split('#')[0]+'#survey='+cur.code+'|'+survId+'|'+t.id;
