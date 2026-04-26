@@ -788,16 +788,34 @@ function initSD(c){var d=getSD(c);if(!d){d={teachers:[],submissions:[],circulars
 
 async function loadFromFirebase(){
   try{
+    // تحميل قائمة المدارس
     var fbSchools=await fbRead('pt_schools');
-    if(fbSchools&&Array.isArray(fbSchools)){
+    if(fbSchools&&Array.isArray(fbSchools)&&fbSchools.length>0){
       localStorage.setItem('pt_schools',JSON.stringify(fbSchools));
       schools=fbSchools;
+    } else {
+      // ترحيل البيانات المحلية إلى Firebase
+      var localSchools=getSchools();
+      if(localSchools.length>0){
+        await fbWrite('pt_schools',localSchools);
+        schools=localSchools;
+      }
     }
-    // Load data for all known schools
+    // تحميل بيانات كل مدرسة
     for(var i=0;i<schools.length;i++){
       var code=schools[i].code;
       var fbSD=await fbRead('pt_'+code);
-      if(fbSD){try{localStorage.setItem('pt_'+code,JSON.stringify(fbSD));}catch(e){}}
+      if(fbSD&&(fbSD.teachers&&fbSD.teachers.length>0)){
+        try{localStorage.setItem('pt_'+code,JSON.stringify(fbSD));}catch(e){}
+      } else {
+        // ترحيل بيانات المدرسة من localStorage إلى Firebase
+        var localSD=getSD(code);
+        if(localSD&&localSD.teachers&&localSD.teachers.length>0){
+          await fbWrite('pt_'+code,localSD);
+        } else if(fbSD){
+          try{localStorage.setItem('pt_'+code,JSON.stringify(fbSD));}catch(e){}
+        }
+      }
     }
   }catch(e){console.warn('Firebase load failed, using local data',e);}
 }
