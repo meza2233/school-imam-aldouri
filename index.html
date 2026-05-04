@@ -287,13 +287,13 @@ tr:hover td{background:var(--gb)}
   <div class="modal" style="max-width:520px">
     <button class="modal-close" onclick="hideModal('mdlSendWa')">✕</button>
     <h2 id="mdlSendWaTitle">📱 إرسال واتساب</h2>
-    <p class="modal-desc">اضغط على زر الإرسال بجانب كل معلم، أو استخدم "إرسال للكل" لإرسالها تلقائياً</p>
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:13px;color:var(--tl)">
       <span>إجمالي: <b id="waTotalCount">0</b></span>
       <span style="color:var(--gd)">تم الإرسال: <b id="waSentCount">0</b></span>
     </div>
-    <button id="waSendAllBtn" onclick="sendWaAll()" style="width:100%;padding:10px;background:#25d366;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:10px">📱 إرسال للكل تلقائياً</button>
-    <div id="mdlWaList" style="max-height:360px;overflow-y:auto;display:flex;flex-direction:column;gap:8px"></div>
+    <button id="waSendAllBtn" onclick="sendWaAll()" style="width:100%;padding:12px;background:#25d366;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:10px">📱 إرسال للكل</button>
+    <div id="waPopupNote" style="display:none;background:#fff8e1;border:1px solid #ffc107;border-radius:8px;padding:8px 12px;font-size:12px;color:#856404;margin-bottom:10px;text-align:center">⚠️ إذا لم تفتح جميع النوافذ، اضغط على أيقونة المتصفح في شريط العنوان واسمح بالنوافذ المنبثقة، ثم اضغط إرسال للكل مجدداً</div>
+    <div id="mdlWaList" style="max-height:340px;overflow-y:auto;display:flex;flex-direction:column;gap:8px"></div>
   </div>
 </div>
 
@@ -1474,7 +1474,9 @@ function openWaModal(title,items){
   document.getElementById('waTotalCount').textContent=items.length;
   document.getElementById('waSentCount').textContent=0;
   var ab=document.getElementById('waSendAllBtn');
-  if(ab){ab.textContent='📱 إرسال للكل تلقائياً';ab.disabled=false;}
+  if(ab){ab.textContent='📱 إرسال للكل';ab.disabled=false;}
+  var note=document.getElementById('waPopupNote');
+  if(note) note.style.display='none';
   document.getElementById('mdlWaList').innerHTML=items.map(function(item,i){
     return '<div id="waRow'+i+'" style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--gb);border-radius:8px;border:1px solid var(--bd)">'+
       '<div><div style="font-weight:600;font-size:13px">'+item.name+'</div>'+
@@ -1504,23 +1506,17 @@ function sendWaAll(){
     var btn=document.getElementById('waBtnRow'+i);
     if(btn&&!btn.disabled) pending.push(i);
   });
-  if(pending.length===0){
-    var ab=document.getElementById('waSendAllBtn');
-    if(ab){ab.textContent='✅ تم الإرسال للجميع';ab.disabled=true;}
-    return;
-  }
-  sendWaItem(pending[0]);
-  if(pending.length>1){
-    _waAutoHandler=function(){
-      window.removeEventListener('focus',_waAutoHandler);
-      _waAutoHandler=null;
-      setTimeout(sendWaAll,400);
-    };
-    window.addEventListener('focus',_waAutoHandler);
-  } else {
-    var ab=document.getElementById('waSendAllBtn');
-    if(ab){ab.textContent='✅ تم الإرسال للجميع';ab.disabled=true;}
-  }
+  if(pending.length===0) return;
+  var ab=document.getElementById('waSendAllBtn');
+  var note=document.getElementById('waPopupNote');
+  if(ab){ab.disabled=true;ab.textContent='⏳ جاري الفتح...';}
+  if(note) note.style.display='block';
+  pending.forEach(function(i,idx){
+    setTimeout(function(){
+      sendWaItem(i);
+      if(idx===pending.length-1&&ab){ab.textContent='✅ تم الإرسال للجميع';}
+    },idx*300);
+  });
 }
 
 function sendWa(id){
