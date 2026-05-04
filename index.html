@@ -287,12 +287,13 @@ tr:hover td{background:var(--gb)}
   <div class="modal" style="max-width:520px">
     <button class="modal-close" onclick="hideModal('mdlSendWa')">✕</button>
     <h2 id="mdlSendWaTitle">📱 إرسال واتساب</h2>
-    <p class="modal-desc">اضغط على زر الإرسال بجانب كل معلم لفتح واتساب</p>
+    <p class="modal-desc">اضغط على زر الإرسال بجانب كل معلم، أو استخدم "إرسال للكل" لإرسالها تلقائياً</p>
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:13px;color:var(--tl)">
       <span>إجمالي: <b id="waTotalCount">0</b></span>
       <span style="color:var(--gd)">تم الإرسال: <b id="waSentCount">0</b></span>
     </div>
-    <div id="mdlWaList" style="max-height:400px;overflow-y:auto;display:flex;flex-direction:column;gap:8px"></div>
+    <button id="waSendAllBtn" onclick="sendWaAll()" style="width:100%;padding:10px;background:#25d366;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:10px">📱 إرسال للكل تلقائياً</button>
+    <div id="mdlWaList" style="max-height:360px;overflow-y:auto;display:flex;flex-direction:column;gap:8px"></div>
   </div>
 </div>
 
@@ -1467,11 +1468,13 @@ function deselAll(){document.querySelectorAll('.wa-cb').forEach(function(cb){cb.
 var _waQueue=[];
 
 function openWaModal(title,items){
-  // items: [{name, phone, url}]
+  if(_waAutoHandler){window.removeEventListener('focus',_waAutoHandler);_waAutoHandler=null;}
   _waQueue=items.slice();
   document.getElementById('mdlSendWaTitle').textContent='📱 '+title;
   document.getElementById('waTotalCount').textContent=items.length;
   document.getElementById('waSentCount').textContent=0;
+  var ab=document.getElementById('waSendAllBtn');
+  if(ab){ab.textContent='📱 إرسال للكل تلقائياً';ab.disabled=false;}
   document.getElementById('mdlWaList').innerHTML=items.map(function(item,i){
     return '<div id="waRow'+i+'" style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--gb);border-radius:8px;border:1px solid var(--bd)">'+
       '<div><div style="font-weight:600;font-size:13px">'+item.name+'</div>'+
@@ -1491,6 +1494,33 @@ function sendWaItem(i){
   if(btn){btn.textContent='✓ تم';btn.style.background='var(--gd)';btn.disabled=true;}
   var cnt=document.getElementById('waSentCount');
   if(cnt) cnt.textContent=parseInt(cnt.textContent)+1;
+}
+
+var _waAutoHandler=null;
+function sendWaAll(){
+  if(_waAutoHandler){window.removeEventListener('focus',_waAutoHandler);_waAutoHandler=null;}
+  var pending=[];
+  _waQueue.forEach(function(_,i){
+    var btn=document.getElementById('waBtnRow'+i);
+    if(btn&&!btn.disabled) pending.push(i);
+  });
+  if(pending.length===0){
+    var ab=document.getElementById('waSendAllBtn');
+    if(ab){ab.textContent='✅ تم الإرسال للجميع';ab.disabled=true;}
+    return;
+  }
+  sendWaItem(pending[0]);
+  if(pending.length>1){
+    _waAutoHandler=function(){
+      window.removeEventListener('focus',_waAutoHandler);
+      _waAutoHandler=null;
+      setTimeout(sendWaAll,400);
+    };
+    window.addEventListener('focus',_waAutoHandler);
+  } else {
+    var ab=document.getElementById('waSendAllBtn');
+    if(ab){ab.textContent='✅ تم الإرسال للجميع';ab.disabled=true;}
+  }
 }
 
 function sendWa(id){
