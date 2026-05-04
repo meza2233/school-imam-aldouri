@@ -6,6 +6,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Cairo',sans-serif}
 body{background:#f5f4f0;direction:rtl;min-height:100vh}
@@ -762,7 +763,7 @@ const WEEKS=[
 
 // ====== STORAGE ======
 // ====== FIREBASE SETUP ======
-var fbDB=null;
+var fbDB=null,fbStorage=null;
 try{
   firebase.initializeApp({
     apiKey:"AIzaSyC7hxGVzicBkNqG2qjqOvC6mcfd2YiArg8",
@@ -774,6 +775,7 @@ try{
     appId:"1:237651221352:web:f4e2c58ff34088324a54dd"
   });
   fbDB=firebase.database();
+  fbStorage=firebase.storage();
 }catch(e){console.warn('Firebase init error',e);}
 
 function fbWrite(path,data){if(fbDB)return fbDB.ref(path).set(data).catch(function(e){console.warn('FB write error',e);});return Promise.resolve();}
@@ -1272,7 +1274,7 @@ function renderReport(){
   document.getElementById('weekBadge').textContent=rows.length+' خطة مستلمة';
   var html=rows.map(function(r,i){
     var subj=(d.teachers.find(function(t){return t.name===r.teacherName;})||{subject:'—'}).subject;
-    var viewBtn=r.fileData?
+    var viewBtn=(r.fileUrl||r.fileData)?
       '<button onclick="viewPlan(\''+cur.code+'\',\''+r.teacherName+'\',\''+r.week+'\')" style="background:var(--gd);color:#fff;border:none;border-radius:4px;padding:3px 10px;cursor:pointer;font-size:12px;font-family:inherit">👁 عرض</button>':
       '<span style="color:#bbb;font-size:12px">لا يوجد ملف</span>';
     return '<tr><td><b>'+r.teacherName+'</b></td><td>'+subj+'</td><td>'+r.date+'</td><td>'+r.week+'</td>'+
@@ -1290,12 +1292,18 @@ function renderReport(){
 function viewPlan(sCode,teacherName,week){
   var d=getSD(sCode)||{submissions:[]};
   var sub=d.submissions.find(function(s){return s.teacherName===teacherName&&s.week===week;});
-  if(!sub||!sub.fileData){alert('لا يوجد ملف لهذا المعلم');return;}
-  var w=window.open('','_blank');
-  w.document.write('<html><head><title>خطة '+teacherName+'</title></head><body style="margin:0">'+
-    '<iframe src="'+sub.fileData+'" width="100%" height="100%" style="border:none;position:fixed;top:0;left:0;width:100%;height:100%"></iframe>'+
-    '</body></html>');
-  w.document.close();
+  if(!sub){alert('لا يوجد ملف لهذا المعلم');return;}
+  if(sub.fileUrl){
+    window.open(sub.fileUrl,'_blank');
+  } else if(sub.fileData){
+    var w=window.open('','_blank');
+    w.document.write('<html><head><title>خطة '+teacherName+'</title></head><body style="margin:0">'+
+      '<iframe src="'+sub.fileData+'" width="100%" height="100%" style="border:none;position:fixed;top:0;left:0;width:100%;height:100%"></iframe>'+
+      '</body></html>');
+    w.document.close();
+  } else {
+    alert('لا يوجد ملف لهذا المعلم');
+  }
 }
 
 function sendReminder(phone,name,week){
@@ -1953,23 +1961,42 @@ function confirmUpload(){
   var tId=parseInt(noWeek.substring(dashIdx+1));
   var weekParam=hash.includes('week=')?decodeURIComponent(hash.split('week=')[1]):WEEKS[0];
   var wk=getWKey(weekParam);
-  var reader=new FileReader();
-  reader.onload=function(e){
-    var d=initSD(sCode);
-    var teacher=d.teachers.find(function(t){return t.id===tId;});
-    var existing=d.submissions.findIndex(function(s){return s.teacherName===(teacher?teacher.name:'معلم')&&s.week===wk;});
-    var sub={teacherName:teacher?teacher.name:'معلم',date:new Date().toISOString().split('T')[0],week:wk,status:'مرسل',fileData:e.target.result,fileName:file.name};
+  var btn=document.querySelector('button[onclick="confirmUpload()"]');
+  var origTxt=btn?btn.textContent:'';
+  if(btn){btn.disabled=true;btn.textContent='⏳ جاري الرفع...';}
+  var d=initSD(sCode);
+  var teacher=d.teachers.find(function(t){return t.id===tId;});
+  var teacherName=teacher?teacher.name:'معلم';
+  function saveSubmission(fileUrl,fileData){
+    var sub={teacherName:teacherName,date:new Date().toISOString().split('T')[0],week:wk,status:'مرسل',fileName:file.name};
+    if(fileUrl) sub.fileUrl=fileUrl;
+    if(fileData) sub.fileData=fileData;
+    var existing=d.submissions.findIndex(function(s){return s.teacherName===teacherName&&s.week===wk;});
     if(existing>-1) d.submissions[existing]=sub;
     else d.submissions.push(sub);
-    try{
-      setSD(sCode,d);
-      document.getElementById('upForm').style.display='none';
-      document.getElementById('upSuccess').style.display='block';
-    } catch(err){
-      alert('الملف كبير جداً، يرجى ضغط الملف وإعادة المحاولة');
-    }
-  };
-  reader.readAsDataURL(file);
+    setSD(sCode,d);
+    document.getElementById('upForm').style.display='none';
+    document.getElementById('upSuccess').style.display='block';
+  }
+  if(fbStorage){
+    var path='submissions/'+sCode+'/'+teacherName+'_'+wk+'_'+Date.now();
+    var ref=fbStorage.ref(path);
+    ref.put(file).then(function(){return ref.getDownloadURL();}).then(function(url){
+      saveSubmission(url,null);
+    }).catch(function(err){
+      console.error('Storage upload error',err);
+      alert('حدث خطأ أثناء الرفع، يرجى المحاولة مجدداً');
+      if(btn){btn.disabled=false;btn.textContent=origTxt;}
+    });
+  } else {
+    var reader=new FileReader();
+    reader.onload=function(e){
+      try{saveSubmission(null,e.target.result);}
+      catch(err){alert('الملف كبير جداً، يرجى ضغط الملف وإعادة المحاولة');
+      if(btn){btn.disabled=false;btn.textContent=origTxt;}}
+    };
+    reader.readAsDataURL(file);
+  }
 }
 
 document.addEventListener('DOMContentLoaded',function(){
