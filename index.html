@@ -801,7 +801,15 @@ function normalizeSD(d){
 function getSchools(){try{return JSON.parse(localStorage.getItem('pt_schools')||'[]');}catch(e){return[];}}
 function setSchools(d){localStorage.setItem('pt_schools',JSON.stringify(d));fbWrite('pt_schools',d);}
 function getSD(c){try{var d=JSON.parse(localStorage.getItem('pt_'+c)||'null');return normalizeSD(d);}catch(e){return null;}}
-function setSD(c,d){try{localStorage.setItem('pt_'+c,JSON.stringify(d));}catch(e){}fbWrite('pt_'+c,d);}
+function setSD(c,d){
+  try{localStorage.setItem('pt_'+c,JSON.stringify(d));}catch(e){}
+  try{
+    var dFB=JSON.parse(JSON.stringify(d));
+    if(dFB.submissions) dFB.submissions=dFB.submissions.map(function(s){var s2=Object.assign({},s);delete s2.fileData;return s2;});
+    if(dFB.circulars) dFB.circulars=dFB.circulars.map(function(ci){var c2=Object.assign({},ci);delete c2.fileData;return c2;});
+    fbWrite('pt_'+c,dFB).catch(function(e){console.warn('FB write error',e);});
+  }catch(e){console.warn('setSD FB error',e);}
+}
 function initSD(c){var d=getSD(c);if(!d){d={teachers:[],submissions:[],circulars:[],surveys:[],driveUrl:''};setSD(c,d);}return d;}
 
 async function loadFromFirebase(){
