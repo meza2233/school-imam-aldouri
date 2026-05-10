@@ -1266,7 +1266,10 @@ function renderReport(){
   var html=rows.map(function(r,i){
     var subj=r.teacherSubject||(d.teachers.find(function(t){return t.name===r.teacherName;})||{subject:'—'}).subject;
     var viewBtn=(r.fileUrl||r.fileData)?
-      '<button onclick="viewPlan(\''+cur.code+'\',\''+r.teacherName+'\',\''+r.week+'\')" style="background:var(--gd);color:#fff;border:none;border-radius:4px;padding:3px 10px;cursor:pointer;font-size:12px;font-family:inherit">👁 عرض</button>':
+      '<div style="display:flex;gap:4px">'+
+      '<button onclick="viewPlan(\''+cur.code+'\',\''+r.teacherName+'\',\''+r.week+'\')" style="background:var(--gd);color:#fff;border:none;border-radius:4px;padding:3px 10px;cursor:pointer;font-size:12px;font-family:inherit">👁 عرض</button>'+
+      '<button onclick="downloadPlan(\''+cur.code+'\',\''+r.teacherName+'\',\''+r.week+'\')" style="background:#2980b9;color:#fff;border:none;border-radius:4px;padding:3px 10px;cursor:pointer;font-size:12px;font-family:inherit">⬇ تحميل</button>'+
+      '</div>':
       '<span style="color:#bbb;font-size:12px">لا يوجد ملف</span>';
     return '<tr><td><b>'+r.teacherName+'</b></td><td>'+subj+'</td><td>'+r.date+'</td><td>'+r.week+'</td>'+
       '<td><span class="badge bg">✓ مرسل</span></td>'+
@@ -1296,6 +1299,34 @@ function viewPlan(sCode,teacherName,week){
       '<iframe src="'+sub.fileData+'" width="100%" height="100%" style="border:none;position:fixed;top:0;left:0;width:100%;height:100%"></iframe>'+
       '</body></html>');
     w.document.close();
+  } else {
+    alert('لا يوجد ملف لهذا المعلم');
+  }
+}
+
+function downloadPlan(sCode,teacherName,week){
+  var d=getSD(sCode)||{submissions:[]};
+  var sub=d.submissions.find(function(s){return s.teacherName===teacherName&&s.week===week;});
+  if(!sub){alert('لا يوجد ملف لهذا المعلم');return;}
+  if(sub.fileUrl){
+    var url=sub.fileUrl;
+    if(url.indexOf('cloudinary.com')!==-1){
+      url=url.replace('/upload/','/upload/fl_attachment/');
+    }
+    var a=document.createElement('a');
+    a.href=url;
+    a.download=teacherName+'_خطة.jpg';
+    a.target='_blank';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  } else if(sub.fileData){
+    var a2=document.createElement('a');
+    a2.href=sub.fileData;
+    a2.download=teacherName+'_خطة.pdf';
+    document.body.appendChild(a2);
+    a2.click();
+    document.body.removeChild(a2);
   } else {
     alert('لا يوجد ملف لهذا المعلم');
   }
