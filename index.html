@@ -1313,8 +1313,8 @@ function downloadPlan(sCode,teacherName,week){
     var ext='.jpg';
     if(url.indexOf('cloudinary.com')!==-1){
       if(url.indexOf('/image/upload/')!==-1){
-        url=url.replace('/image/upload/','/image/upload/fl_attachment,f_pdf/').replace(/\.[^.]+$/,'.pdf');
-        ext='.pdf';
+        url=url.replace('/image/upload/','/image/upload/fl_attachment,f_jpg/').replace(/\.[^.]+$/,'.jpg');
+        ext='.jpg';
       } else {
         alert('هذا الملف القديم لا يمكن تحميله، يرجى طلب إعادة الرفع');
         return;
