@@ -1313,13 +1313,19 @@ function downloadPlan(sCode,teacherName,week){
     if(url.indexOf('cloudinary.com')!==-1){
       url=url.replace('/upload/','/upload/fl_attachment/');
     }
-    var a=document.createElement('a');
-    a.href=url;
-    a.download=teacherName+'_خطة.jpg';
-    a.target='_blank';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    fetch(url)
+      .then(function(r){return r.blob();})
+      .then(function(blob){
+        var blobUrl=URL.createObjectURL(blob);
+        var a=document.createElement('a');
+        a.href=blobUrl;
+        a.download=teacherName+'_خطة'+(sub.fileName?'.'+sub.fileName.split('.').pop():'.jpg');
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function(){URL.revokeObjectURL(blobUrl);},5000);
+      })
+      .catch(function(){window.open(url,'_blank');});
   } else if(sub.fileData){
     var a2=document.createElement('a');
     a2.href=sub.fileData;
