@@ -1950,7 +1950,7 @@ function confirmUpload(){
   fd.append('file',file);
   fd.append('upload_preset','rabittec');
   fd.append('folder','rabit/'+sCode);
-  fetch('https://api.cloudinary.com/v1_1/dqeaptszq/raw/upload',{method:'POST',body:fd})
+  fetch('https://api.cloudinary.com/v1_1/dqeaptszq/auto/upload',{method:'POST',body:fd})
     .then(function(r){return r.json();})
     .then(function(data){
       if(data.secure_url){
