@@ -776,16 +776,16 @@ function fbRead(path){if(fbDB)return fbDB.ref(path).get().then(function(s){retur
 function toArr(v){if(!v)return[];if(Array.isArray(v))return v;return Object.values(v);}
 function normalizeSD(d){
   if(!d)return null;
-  d.teachers=toArr(d.teachers);
-  d.submissions=toArr(d.submissions);
-  d.circulars=toArr(d.circulars).map(function(c){
-    c.targetIds=toArr(c.targetIds).map(Number);
-    c.views=toArr(c.views);
+  d.teachers=toArr(d.teachers).filter(Boolean);
+  d.submissions=toArr(d.submissions).filter(Boolean);
+  d.circulars=toArr(d.circulars).filter(Boolean).map(function(c){
+    c.targetIds=toArr(c.targetIds).filter(Boolean).map(Number);
+    c.views=toArr(c.views).filter(Boolean);
     return c;
   });
-  d.surveys=toArr(d.surveys).map(function(s){
-    s.targetIds=toArr(s.targetIds).map(Number);
-    s.completions=toArr(s.completions);
+  d.surveys=toArr(d.surveys).filter(Boolean).map(function(s){
+    s.targetIds=toArr(s.targetIds).filter(Boolean).map(Number);
+    s.completions=toArr(s.completions).filter(Boolean);
     return s;
   });
   return d;
@@ -1201,7 +1201,7 @@ function goTab(name,btn){
   btn.classList.add('active');
   if(name==='report'){
     fbRead('pt_'+cur.code).then(function(fbSD){
-      try{if(fbSD){var nd=normalizeSD(fbSD);if(nd){localStorage.setItem('pt_'+cur.code,JSON.stringify(nd));}}}catch(e){console.warn(e);}
+      if(fbSD){try{localStorage.setItem('pt_'+cur.code,JSON.stringify(fbSD));}catch(e){}}
       buildWeekSel('weekSel');renderReport();
     }).catch(function(){buildWeekSel('weekSel');renderReport();});
   }
