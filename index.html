@@ -1201,7 +1201,13 @@ function goTab(name,btn){
   btn.classList.add('active');
   if(name==='report'){
     fbRead('pt_'+cur.code).then(function(fbSD){
-      if(fbSD){try{localStorage.setItem('pt_'+cur.code,JSON.stringify(fbSD));}catch(e){}}
+      if(fbSD){
+        var nd=normalizeSD(JSON.parse(JSON.stringify(fbSD)));
+        if(nd){
+          try{localStorage.setItem('pt_'+cur.code,JSON.stringify(nd));}catch(e){}
+          fbWrite('pt_'+cur.code,nd).catch(function(){});
+        }
+      }
       buildWeekSel('weekSel');renderReport();
     }).catch(function(){buildWeekSel('weekSel');renderReport();});
   }
