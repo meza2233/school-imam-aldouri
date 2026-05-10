@@ -1260,8 +1260,9 @@ function renderReport(){
   var w=document.getElementById('weekSel').value;
   var wk=getWKey(w);
   var rows=d.submissions.filter(function(s){return s.week===wk;});
-  var sentNames=rows.map(function(r){return r.teacherName;});
-  var notSent=d.teachers.filter(function(t){return !sentNames.includes(t.name);});
+  function normName(n){return(n||'').trim().replace(/\s+/g,' ').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي');}
+  var sentNames=rows.map(function(r){return normName(r.teacherName);});
+  var notSent=d.teachers.filter(function(t){return !sentNames.includes(normName(t.name));});
   document.getElementById('weekBadge').textContent=rows.length+' خطة مستلمة';
   var html=rows.map(function(r,i){
     var subj=r.teacherSubject||(d.teachers.find(function(t){return t.name===r.teacherName;})||{subject:'—'}).subject;
@@ -1356,7 +1357,8 @@ function exportReport(){
   var w=document.getElementById('weekSel').value;
   var wk=getWKey(w);
   var rows=d.submissions.filter(function(s){return s.week===wk;});
-  var notSent=d.teachers.filter(function(t){return !rows.find(function(r){return r.teacherName===t.name;});});
+  function normN(n){return(n||'').trim().replace(/\s+/g,' ').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي');}
+  var notSent=d.teachers.filter(function(t){return !rows.find(function(r){return normN(r.teacherName)===normN(t.name);});});
   var today=new Date().toLocaleDateString('ar-SA');
   var html='<!DOCTYPE html><html dir="rtl" lang="ar"><head><meta charset="UTF-8"><style>'+
   'body{font-family:Arial;direction:rtl;padding:20px}h2{text-align:center;color:#1a6e3c;border-bottom:3px solid #3a9e6e;padding-bottom:8px}'+
