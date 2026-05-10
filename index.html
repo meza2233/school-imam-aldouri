@@ -1266,7 +1266,7 @@ function renderReport(){
   var html=rows.map(function(r,i){
     var subj=r.teacherSubject||(d.teachers.find(function(t){return t.name===r.teacherName;})||{subject:'—'}).subject;
     var viewBtn=(r.fileUrl||r.fileData)?
-      '<button onclick="viewPlan(\''+cur.code+'\',\''+r.teacherName+'\',\''+r.week+'\')" style="background:var(--gd);color:#fff;border:none;border-radius:4px;padding:3px 10px;cursor:pointer;font-size:12px;font-family:inherit">👁 عرض</button>':
+      '<button onclick="viewPlan(\''+cur.code+'\',\''+r.teacherName+'\',\''+r.week+'\')" style="background:var(--gd);color:#fff;border:none;border-radius:4px;padding:3px 10px;cursor:pointer;font-size:12px;font-family:inherit">⬇ تحميل</button>':
       '<span style="color:#bbb;font-size:12px">لا يوجد ملف</span>';
     return '<tr><td><b>'+r.teacherName+'</b></td><td>'+subj+'</td><td>'+r.date+'</td><td>'+r.week+'</td>'+
       '<td><span class="badge bg">✓ مرسل</span></td>'+
@@ -1285,7 +1285,11 @@ function viewPlan(sCode,teacherName,week){
   var sub=d.submissions.find(function(s){return s.teacherName===teacherName&&s.week===week;});
   if(!sub){alert('لا يوجد ملف لهذا المعلم');return;}
   if(sub.fileUrl){
-    window.open(sub.fileUrl,'_blank');
+    var url=sub.fileUrl;
+    if(url.indexOf('cloudinary.com')!==-1){
+      url=url.replace('/upload/','/upload/fl_attachment,fl_original/');
+    }
+    window.open(url,'_blank');
   } else if(sub.fileData){
     var w=window.open('','_blank');
     w.document.write('<html><head><title>خطة '+teacherName+'</title></head><body style="margin:0">'+
@@ -1950,7 +1954,7 @@ function confirmUpload(){
   fd.append('file',file);
   fd.append('upload_preset','rabittec');
   fd.append('folder','rabit/'+sCode);
-  fetch('https://api.cloudinary.com/v1_1/dqeaptszq/raw/upload',{method:'POST',body:fd})
+  fetch('https://api.cloudinary.com/v1_1/dqeaptszq/image/upload',{method:'POST',body:fd})
     .then(function(r){return r.json();})
     .then(function(data){
       if(data.secure_url){
