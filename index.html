@@ -1310,8 +1310,15 @@ function downloadPlan(sCode,teacherName,week){
   if(!sub){alert('لا يوجد ملف لهذا المعلم');return;}
   if(sub.fileUrl){
     var url=sub.fileUrl;
+    var ext='.jpg';
     if(url.indexOf('cloudinary.com')!==-1){
-      url=url.replace('/upload/','/upload/fl_attachment/');
+      if(url.indexOf('/image/upload/')!==-1){
+        url=url.replace('/image/upload/','/image/upload/fl_attachment,f_jpg/').replace(/\.pdf$/i,'.jpg');
+        ext='.jpg';
+      } else {
+        alert('هذا الملف القديم لا يمكن تحميله، يرجى طلب إعادة الرفع');
+        return;
+      }
     }
     fetch(url)
       .then(function(r){return r.blob();})
@@ -1319,13 +1326,13 @@ function downloadPlan(sCode,teacherName,week){
         var blobUrl=URL.createObjectURL(blob);
         var a=document.createElement('a');
         a.href=blobUrl;
-        a.download=teacherName+'_خطة'+(sub.fileName?'.'+sub.fileName.split('.').pop():'.jpg');
+        a.download=teacherName+'_خطة'+ext;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         setTimeout(function(){URL.revokeObjectURL(blobUrl);},5000);
       })
-      .catch(function(){window.open(url,'_blank');});
+      .catch(function(){alert('تعذر تحميل الملف');});
   } else if(sub.fileData){
     var a2=document.createElement('a');
     a2.href=sub.fileData;
