@@ -1285,13 +1285,7 @@ function viewPlan(sCode,teacherName,week){
   var sub=d.submissions.find(function(s){return s.teacherName===teacherName&&s.week===week;});
   if(!sub){alert('لا يوجد ملف لهذا المعلم');return;}
   if(sub.fileUrl){
-    var url=sub.fileUrl;
-    var isPdf=url.toLowerCase().indexOf('.pdf')!==-1||url.indexOf('/raw/')!==-1;
-    if(isPdf){
-      window.open('https://docs.google.com/viewer?url='+encodeURIComponent(url),'_blank');
-    } else {
-      window.open(url,'_blank');
-    }
+    window.open(sub.fileUrl,'_blank');
   } else if(sub.fileData){
     var w=window.open('','_blank');
     w.document.write('<html><head><title>خطة '+teacherName+'</title></head><body style="margin:0">'+
