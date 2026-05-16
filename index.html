@@ -21,19 +21,23 @@ body{background:#f5f4f0;direction:rtl;min-height:100vh}
 }
 
 /* Header */
-.header{background:linear-gradient(90deg,#ddd9d0 0%,#f5f4f0 30%,#f5f4f0 70%,#ddd9d0 100%);border-bottom:3px solid var(--gd);padding:0.5rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.header{background:linear-gradient(90deg,#ddd9d0 0%,#f5f4f0 30%,#f5f4f0 70%,#ddd9d0 100%);border-bottom:3px solid var(--gd);padding:0.5rem 1.5rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:relative}
 .header-logo{display:flex;align-items:center;gap:0px}
 .header-info h1{font-size:26px;font-weight:700;color:var(--gd);font-family:'Cairo',sans-serif}
 .header-info p{font-size:11px;color:var(--tm);margin-top:2px}
 .school-badge{font-size:11px;background:var(--gp);border:1px solid var(--bd);color:var(--gd);padding:2px 10px;border-radius:20px;margin-top:3px;display:inline-block}
 .header-actions{display:flex;gap:8px;flex-wrap:wrap}
 
-/* Nav */
-.nav{background:#fff;padding:0.7rem 1.5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd);flex-wrap:wrap;gap:8px}
-.nav-tabs{display:flex;gap:4px;flex-wrap:wrap}
-.nav-tab{padding:7px 14px;border-radius:7px;border:none;background:none;font-size:13px;cursor:pointer;color:var(--tm);font-family:inherit;font-weight:500;transition:all 0.2s}
-.nav-tab.active{background:var(--gd);color:#fff}
-.nav-tab:hover:not(.active){background:var(--gb);color:var(--gd)}
+/* Nav — pill style matching landing seg-nav */
+.nav{position:relative;margin-top:-22px;z-index:5;
+  display:flex;align-items:center;justify-content:center;padding:0 16px;background:none;border:none;
+  flex-wrap:wrap;gap:8px}
+.nav-tabs{display:inline-flex;align-items:center;background:#fff;border:1px solid var(--bd);
+  border-radius:999px;padding:4px;gap:2px;box-shadow:0 8px 20px rgba(20,40,80,0.1);flex-wrap:wrap;justify-content:center}
+.nav-tab{padding:8px 18px;border-radius:999px;border:none;background:none;font-size:13px;cursor:pointer;color:var(--tm);font-family:inherit;font-weight:600;transition:all 0.15s;white-space:nowrap}
+.nav-tab.active{background:var(--gd);color:#fff;box-shadow:0 4px 10px rgba(20,40,80,0.18)}
+.nav-tab:hover:not(.active){color:var(--gd)}
+.dash-content{padding:2.5rem 1.5rem 1.2rem}
 
 /* Buttons */
 .btn{padding:7px 16px;border-radius:7px;border:none;font-size:13px;cursor:pointer;font-family:inherit;font-weight:600;transition:all 0.2s}
@@ -95,7 +99,7 @@ body{background:#f5f4f0;direction:rtl;min-height:100vh}
 .land-footer{background:#0f1e3a;padding:1rem;text-align:center;color:rgba(255,255,255,0.5);font-size:12px}
 
 /* Dashboard content */
-.dash-content{padding:1.2rem 1.5rem}
+.dash-content{padding:2.5rem 1.5rem 1.2rem}
 .card{background:#fff;border-radius:10px;border:1px solid var(--bd);overflow:hidden;margin-bottom:14px}
 .card-header{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--gb);flex-wrap:wrap;gap:6px}
 .card-header h3{font-size:14px;font-weight:600;color:var(--gd)}
@@ -171,8 +175,9 @@ tr:hover td{background:var(--gb)}
   .land-logo h1{font-size:18px!important}
   .land-nav{justify-content:center;width:100%;gap:8px}
   .btn-ln,.btn-lr{padding:5px 12px;font-size:11px;flex:0 1 auto}
-  .nav{padding:0.5rem 0.8rem}
-  .nav-tab{padding:5px 8px;font-size:11px}
+  .nav{margin-top:-20px;padding:0 8px}
+  .nav-tab{padding:6px 12px;font-size:11px}
+  .dash-content{padding:1.8rem 0.8rem 0.8rem}
   .hero{padding:2.5rem 1rem}
   .hero h2{font-size:1.3rem}
   .dash-content{padding:0.8rem}
@@ -184,6 +189,214 @@ tr:hover td{background:var(--gb)}
 #loadingOverlay p{font-size:14px;color:var(--tm)}
 .spinner{width:40px;height:40px;border:4px solid var(--gp);border-top-color:var(--gd);border-radius:50%;animation:spin 0.8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* =================================================================
+   LANDING v2 — scoped to #pgLanding so dashboard styles are untouched
+   ================================================================= */
+#pgLanding{
+  --navy:#1a3a6b; --navy-d:#0f2547; --navy-x:#091a36;
+  --ink:#1a1a2e; --mid:#3a4a6b; --soft:#7a8aab;
+  --pale:#e8eef7; --edge:#e6ebf2; --paper:#f8f9fb; --paper-2:#f1f3f8;
+  --cream:#f5f1e8;
+  --cyan:#1ec9c1; --cyan-d:#0fa39c;
+  --gold:#d4a73a; --green:#1f8f4d;
+  background:#fff;color:var(--ink);
+}
+
+/* ── NAV ───────────────────────────────────────────────────────── */
+#pgLanding .lnav{position:sticky;top:0;z-index:50;background:#fff;
+  border-bottom:1px solid var(--edge);padding:0}
+#pgLanding .lnav-top{display:flex;align-items:center;justify-content:space-between;
+  padding:14px 40px 22px;gap:16px;flex-wrap:wrap;position:relative}
+#pgLanding .lnav-bottom{position:absolute;left:0;right:0;bottom:-22px;
+  display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:5}
+#pgLanding .lnav-bottom > *{pointer-events:auto}
+#pgLanding .brand{display:flex;align-items:center;gap:14px}
+#pgLanding .brand img{height:110px;width:auto;display:block}
+#pgLanding .brand-divider{width:1px;height:64px;background:rgba(26,58,107,0.18);flex-shrink:0}
+#pgLanding .brand > div{text-align:center}
+#pgLanding .brand .name{font-size:24px;font-weight:800;color:var(--navy);letter-spacing:-0.01em;line-height:1.15}
+#pgLanding .brand .sub{font-size:13px;color:var(--soft);margin-top:4px;letter-spacing:0.02em;font-weight:500;direction:ltr}
+
+#pgLanding .seg-nav{display:inline-flex;align-items:center;background:#fff;border:1px solid var(--edge);
+  border-radius:999px;padding:4px;gap:2px;box-shadow:0 8px 20px rgba(20,40,80,0.1)}
+#pgLanding .seg-item{position:relative;display:inline-flex}
+#pgLanding .seg-item > a.has-caret::after{content:"▾";margin-right:6px;font-size:9px;opacity:.7;display:inline-block;transition:transform .15s}
+#pgLanding .seg-item.open > a.has-caret::after{transform:rotate(180deg)}
+#pgLanding .seg-item .dropdown{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);
+  background:#fff;border:1px solid var(--edge);border-radius:14px;padding:6px;min-width:220px;
+  box-shadow:0 12px 30px rgba(20,40,80,0.18);display:none;z-index:60}
+#pgLanding .seg-item.open .dropdown{display:block}
+#pgLanding .seg-item .dropdown a{display:block;padding:10px 14px;border-radius:8px;font-size:13px;
+  color:var(--mid);font-weight:600;text-decoration:none;white-space:nowrap;text-align:right;transition:all .12s}
+#pgLanding .seg-item .dropdown a:hover{background:var(--paper);color:var(--navy)}
+#pgLanding .seg-nav a{text-decoration:none;color:var(--mid);padding:8px 18px;border-radius:999px;
+  font-size:13px;font-weight:600;transition:all .15s;font-family:inherit}
+#pgLanding .seg-nav a:hover{color:var(--ink)}
+#pgLanding .seg-nav a.on{background:var(--navy-d);color:#fff;box-shadow:0 4px 10px rgba(20,40,80,0.18)}
+
+#pgLanding .nav-cta{display:flex;align-items:center;gap:10px}
+#pgLanding .pill-add{background:var(--navy-d);color:#fff;border:none;
+  padding:9px 18px 9px 14px;border-radius:999px;font-size:13px;font-weight:600;
+  cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px;
+  box-shadow:0 4px 10px rgba(20,40,80,0.28);transition:all .15s}
+#pgLanding .pill-add::before{content:"+";font-size:15px;font-weight:400;line-height:1}
+#pgLanding .pill-add:hover{background:#000;transform:translateY(-1px)}
+#pgLanding .pill-ghost{background:transparent;border:none;color:var(--ink);font-size:13px;font-weight:600;
+  cursor:pointer;font-family:inherit;padding:9px 14px}
+#pgLanding .pill-ghost:hover{color:var(--navy)}
+
+/* ── HERO ──────────────────────────────────────────────────────── */
+#pgLanding .hero{padding:48px 40px 24px;background:#fff;border-bottom:none}
+#pgLanding .hero-card{position:relative;background:linear-gradient(135deg,var(--navy-d) 0%, var(--navy) 55%, #22467d 100%);
+  border-radius:28px;padding:80px 40px;overflow:hidden;
+  box-shadow:0 24px 60px -20px rgba(20,40,80,0.45);
+  min-height:420px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+#pgLanding .hero-card::before{content:"";position:absolute;left:-180px;top:-60px;width:520px;height:140%;
+  background:radial-gradient(circle at 70% 50%, rgba(30,201,193,0.18) 0%, transparent 50%);pointer-events:none}
+#pgLanding .hero-card::after{content:"";position:absolute;right:-220px;bottom:-160px;width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle, rgba(212,167,58,0.12) 0%, transparent 60%);pointer-events:none}
+#pgLanding .hero-tag{position:relative;z-index:2;display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+  color:#cfdaf0;padding:7px 16px;border-radius:999px;font-size:12px;font-weight:600;margin-bottom:24px;
+  backdrop-filter:blur(6px)}
+#pgLanding .hero-tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--cyan);
+  box-shadow:0 0 12px var(--cyan)}
+#pgLanding .hero-icon{position:relative;z-index:2;width:64px;height:64px;border-radius:16px;
+  background:linear-gradient(135deg,var(--cyan),var(--cyan-d));
+  display:flex;align-items:center;justify-content:center;margin:0 auto 22px;
+  box-shadow:0 12px 28px rgba(30,201,193,0.4)}
+#pgLanding .hero-icon svg{width:30px;height:30px;color:#fff}
+#pgLanding .hero-card h1{position:relative;z-index:2;font-size:54px;font-weight:800;color:#fff;line-height:1.2;
+  margin-bottom:18px;letter-spacing:-0.01em;max-width:780px;font-family:'Cairo',sans-serif}
+#pgLanding .hero-card h1 .accent{background:linear-gradient(90deg,var(--cyan),#7ee2dc);-webkit-background-clip:text;
+  background-clip:text;color:transparent}
+#pgLanding .hero-card p{position:relative;z-index:2;font-size:16px;color:#cfdaf0;line-height:1.9;max-width:620px;
+  margin:0 auto 32px}
+#pgLanding .hero-cta{position:relative;z-index:2;display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+#pgLanding .pill-cta{background:linear-gradient(90deg,var(--cyan),var(--cyan-d));color:#fff;border:none;
+  padding:14px 32px;border-radius:999px;font-size:15px;font-weight:700;cursor:pointer;
+  font-family:inherit;display:inline-flex;align-items:center;gap:8px;
+  box-shadow:0 8px 22px rgba(30,201,193,0.4);transition:all .15s}
+#pgLanding .pill-cta:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(30,201,193,0.5)}
+#pgLanding .pill-light{background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.2);
+  padding:14px 28px;border-radius:999px;font-size:14px;font-weight:600;cursor:pointer;
+  font-family:inherit;backdrop-filter:blur(6px);transition:all .15s}
+#pgLanding .pill-light:hover{background:rgba(255,255,255,0.18)}
+
+/* ── FEATURES ──────────────────────────────────────────────────── */
+#pgLanding .features{padding:24px 40px 56px;background:#fff}
+#pgLanding .feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:1280px;margin:0 auto}
+#pgLanding .feat-card{background:var(--navy-d);border-radius:20px;padding:24px;color:#fff;
+  border:1px solid rgba(255,255,255,0.04);
+  box-shadow:0 8px 28px -10px rgba(20,40,80,0.3);
+  display:flex;flex-direction:column;gap:14px;min-height:200px;position:relative;overflow:hidden;text-align:right}
+#pgLanding .feat-card .sq{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;
+  justify-content:center;font-size:20px}
+#pgLanding .sq-c{background:rgba(30,201,193,0.18);color:var(--cyan)}
+#pgLanding .sq-g{background:rgba(37,211,102,0.18);color:#5fe093}
+#pgLanding .sq-y{background:rgba(212,167,58,0.18);color:#f5cb6b}
+#pgLanding .sq-r{background:rgba(192,57,43,0.22);color:#ff8674}
+#pgLanding .feat-card h3{font-size:17px;font-weight:700;color:#fff;line-height:1.4;margin:0}
+#pgLanding .feat-card p{font-size:12px;color:#9aaecf;line-height:1.7;margin:0}
+#pgLanding .feat-card .more{margin-top:auto;font-size:11px;color:var(--cyan);font-weight:600;
+  display:inline-flex;align-items:center;gap:6px}
+
+/* ── STATS BAND ────────────────────────────────────────────────── */
+#pgLanding .stats{margin:0 40px 56px;background:linear-gradient(135deg,var(--navy) 0%, var(--navy-d) 100%);
+  border-radius:24px;padding:40px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;
+  position:relative;overflow:hidden;box-shadow:0 16px 40px -16px rgba(20,40,80,0.4)}
+#pgLanding .stats::after{content:"";position:absolute;left:-120px;top:-120px;width:360px;height:360px;border-radius:50%;
+  background:radial-gradient(circle, rgba(30,201,193,0.18) 0%, transparent 60%)}
+#pgLanding .stat{position:relative;z-index:2;text-align:center;border-inline-start:1px solid rgba(255,255,255,0.08);
+  padding:0 20px}
+#pgLanding .stat:first-child{border-inline-start:none}
+#pgLanding .stat .num{font-size:42px;font-weight:800;color:#fff;line-height:1;letter-spacing:-0.02em;
+  font-family:'Cairo',sans-serif}
+#pgLanding .stat .num .accent{background:linear-gradient(90deg,var(--cyan),#7ee2dc);-webkit-background-clip:text;
+  background-clip:text;color:transparent}
+#pgLanding .stat .lbl{font-size:11px;color:#9aaecf;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;margin-top:10px}
+
+/* ── EXPERIENCE / SCHOOL STORIES ──────────────────────────────── */
+#pgLanding .exp{background:var(--cream);padding:80px 40px}
+#pgLanding .exp-head{max-width:1180px;margin:0 auto 32px}
+#pgLanding .exp-head .kicker{font-size:11px;color:var(--cyan-d);letter-spacing:0.18em;font-weight:700;text-transform:uppercase}
+#pgLanding .exp-head h2{font-size:40px;font-weight:800;color:var(--ink);margin-top:8px;letter-spacing:-0.01em}
+#pgLanding .exp-card{background:#fff;border:1px solid var(--edge);border-radius:18px;padding:26px 30px;
+  max-width:1180px;margin:0 auto 16px;box-shadow:0 1px 2px rgba(20,30,60,0.04)}
+#pgLanding .exp-row{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
+#pgLanding .exp-row h3{font-size:18px;font-weight:700;color:var(--ink);margin:0}
+#pgLanding .exp-row .meta{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--soft);margin-top:6px;flex-wrap:wrap}
+#pgLanding .exp-row .meta .role{display:inline-flex;align-items:center;gap:6px;color:var(--mid);font-weight:600}
+#pgLanding .exp-row .meta .role::before{content:"🏛";font-size:13px}
+#pgLanding .exp-row .meta .sep{color:var(--edge)}
+#pgLanding .exp-row .meta .tag{color:var(--cyan-d);font-weight:600}
+#pgLanding .exp-row .when{font-size:12px;color:var(--soft);font-family:ui-monospace,monospace;white-space:nowrap}
+#pgLanding .exp-desc{font-size:13px;color:var(--mid);line-height:1.9;margin:14px 0 20px;max-width:780px}
+#pgLanding .exp-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+#pgLanding .exp-stat{background:var(--paper);border:1px solid var(--edge);border-radius:12px;padding:14px 18px}
+#pgLanding .exp-stat .lbl{font-size:10px;color:var(--soft);letter-spacing:0.08em;font-weight:600;text-transform:uppercase;
+  display:flex;align-items:center;gap:5px;margin-bottom:8px}
+#pgLanding .exp-stat .lbl::before{content:"↗";color:var(--green);font-size:12px}
+#pgLanding .exp-stat .num{font-size:22px;font-weight:700;color:var(--ink);line-height:1}
+
+/* ── FOOTER ────────────────────────────────────────────────────── */
+#pgLanding .lfoot{background:var(--navy-x);color:#9aaecf;padding:56px 40px 32px}
+#pgLanding .foot-grid{max-width:1180px;margin:0 auto 36px;display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:40px}
+#pgLanding .foot-brand .name{color:#fff;font-size:18px;font-weight:800;margin-bottom:8px}
+#pgLanding .foot-brand p{font-size:12px;line-height:1.9;color:#9aaecf;margin:0}
+#pgLanding .foot-col h4{color:#fff;font-size:13px;font-weight:700;margin-bottom:14px}
+#pgLanding .foot-col a{display:block;color:#9aaecf;text-decoration:none;font-size:12px;padding:5px 0;transition:color .15s;cursor:pointer}
+#pgLanding .foot-col a:hover{color:var(--cyan)}
+#pgLanding .foot-bot{max-width:1180px;margin:0 auto;border-top:1px solid rgba(255,255,255,0.06);padding-top:20px;
+  display:flex;justify-content:space-between;font-size:11px;flex-wrap:wrap;gap:10px;align-items:center}
+#pgLanding .foot-admin{background:none;border:none;color:rgba(255,255,255,0.3);font-size:11px;cursor:pointer;font-family:inherit}
+#pgLanding .foot-admin:hover{color:var(--cyan)}
+
+/* ── RESPONSIVE ────────────────────────────────────────────────── */
+@media (max-width:900px){
+  #pgLanding .seg-nav{flex-wrap:wrap;justify-content:center}
+  #pgLanding .seg-nav a{padding:7px 14px;font-size:12px}
+  #pgLanding .feat-grid{grid-template-columns:repeat(2,1fr)}
+  #pgLanding .stats{grid-template-columns:repeat(2,1fr);margin:0 16px 40px;padding:28px}
+  #pgLanding .foot-grid{grid-template-columns:1fr 1fr;gap:28px}
+  #pgLanding .hero-card h1{font-size:36px}
+  #pgLanding .exp-head h2{font-size:28px}
+}
+@media (max-width:600px){
+  #pgLanding .lnav-top{padding:10px 14px 26px;gap:10px}
+  #pgLanding .lnav-bottom{bottom:-20px}
+  #pgLanding .seg-nav a{padding:6px 12px;font-size:11px}
+  #pgLanding .brand{gap:10px}
+  #pgLanding .brand img{height:70px}
+  #pgLanding .brand-divider{height:44px}
+  #pgLanding .brand .name{font-size:16px}
+  #pgLanding .brand .sub{font-size:10px}
+  #pgLanding .nav-cta{gap:6px}
+  #pgLanding .pill-add{padding:7px 14px 7px 11px;font-size:12px}
+  #pgLanding .pill-ghost{padding:7px 8px;font-size:12px}
+  #pgLanding .hero{padding:24px 16px 12px}
+  #pgLanding .hero-card{padding:48px 22px;border-radius:20px;min-height:0}
+  #pgLanding .hero-card h1{font-size:28px;line-height:1.35}
+  #pgLanding .hero-card p{font-size:13.5px;line-height:1.85}
+  #pgLanding .pill-cta{padding:12px 22px;font-size:13.5px}
+  #pgLanding .pill-light{padding:12px 20px;font-size:13px}
+  #pgLanding .features{padding:14px 16px 36px}
+  #pgLanding .feat-grid{grid-template-columns:1fr;gap:12px}
+  #pgLanding .feat-card{min-height:0;padding:20px}
+  #pgLanding .stats{grid-template-columns:1fr 1fr;padding:24px 18px;gap:14px;margin:0 16px 36px;border-radius:18px}
+  #pgLanding .stat{padding:0 6px;border-inline-start:none!important}
+  #pgLanding .stat .num{font-size:30px}
+  #pgLanding .exp{padding:48px 16px}
+  #pgLanding .exp-head h2{font-size:24px}
+  #pgLanding .exp-card{padding:20px;border-radius:14px}
+  #pgLanding .exp-row{flex-direction:column;gap:6px}
+  #pgLanding .exp-row .when{font-size:11px}
+  #pgLanding .exp-stats{grid-template-columns:1fr 1fr;gap:8px}
+  #pgLanding .exp-stat{padding:12px 14px}
+  #pgLanding .lfoot{padding:36px 18px 24px}
+  #pgLanding .foot-grid{grid-template-columns:1fr 1fr;gap:22px}
+}
 </style>
 </head>
 <body>
@@ -197,42 +410,156 @@ tr:hover td{background:var(--gb)}
 
 <!-- LANDING -->
 <div id="pgLanding">
-  <div class="land-header">
-    <div class="land-logo">
-      <img src="logo.png" style="height:115px;width:auto;">
-      <div><h1>منصة رابط للإدارة المدرسية</h1></div>
+
+  <!-- NAV -->
+  <nav class="lnav">
+    <div class="lnav-top">
+      <div class="lnav-bottom">
+        <div class="seg-nav">
+          <a href="#" class="on">الرئيسية</a>
+          <a href="#" onclick="showModal('mdlLogin');return false">المدير</a>
+          <span class="seg-item">
+            <a href="#" class="has-caret" onclick="toggleSegMenu(this,event)">الوكيل</a>
+            <div class="dropdown">
+              <a href="#" onclick="openWakeelLogin('دخول وكيل الشؤون التعليمية');return false">وكيل الشؤون التعليمية</a>
+              <a href="#" onclick="openWakeelLogin('دخول وكيل الشؤون المدرسية');return false">وكيل الشؤون المدرسية</a>
+              <a href="#" onclick="openWakeelLogin('دخول وكيل الشؤون الطلابية');return false">وكيل الشؤون الطلابية</a>
+            </div>
+          </span>
+          <a href="#" onclick="showModal('mdlLoginMowajeh');return false">الموجه الطلابي</a>
+          <a href="#stories">التقويم الذاتي</a>
+        </div>
+      </div>
+      <div class="brand">
+        <img src="logo.png" alt="رابط">
+        <div class="brand-divider"></div>
+        <div>
+          <div class="name">منصة رابط للإدارة المدرسية</div>
+          <div class="sub">Rabit Platform for School Administration</div>
+        </div>
+      </div>
+      <div class="nav-cta">
+        <button class="pill-add" onclick="showModal('mdlRegister')">تسجيل مدرسة</button>
+      </div>
     </div>
-    <div class="land-nav">
-      <button class="btn-ln" onclick="showModal('mdlLogin')">دخول المدير</button>
-      <button class="btn-lr" onclick="showModal('mdlRegister')">تسجيل مدرسة جديدة</button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-card">
+      <div class="hero-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1 4 3 6 3s6-2 6-3v-5"/></svg>
+      </div>
+      <h1>منصتك الذكية <span class="accent">لإدارة مدرستك</span><br>بكفاءة واحترافية</h1>
+      <p>منصة متكاملة تتيح لمديري المدارس متابعة خطط الدروس الأسبوعية، والتعاميم، والاستبانات، وإدارة الأعمال الإدارية بكل سهولة عبر واتساب — بدون تطبيقات إضافية.</p>
+      <div class="hero-cta">
+        <button class="pill-cta" onclick="showModal('mdlRegister')">ابدأ مدرستك مجاناً
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </button>
+        <button class="pill-light" onclick="showModal('mdlLogin')">دخول المدير</button>
+      </div>
     </div>
-  </div>
-  <div class="hero">
-    <h2>منصتك الذكية <span>لإدارة مدرستك</span><br>بكفاءة واحترافية</h2>
-    <p>منصة رابط — منصة متكاملة تتيح لمديري المدارس متابعة خطط الدروس الأسبوعية وإدارة الأعمال الإدارية بكل سهولة ويسر</p>
-    <div class="hero-btns">
-      <button class="btn-hp" onclick="showModal('mdlRegister')">تسجيل مدرسة جديدة</button>
-      <button class="btn-hs" onclick="showModal('mdlLogin')">دخول المدير</button>
-    </div>
-  </div>
-  <div class="features">
-    <h3>مميزات المنصة</h3>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
     <div class="feat-grid">
-      <div class="feat-card"><div class="feat-icon">📊</div><div class="feat-title">تقارير أسبوعية</div><div class="feat-desc">تقارير تفصيلية بجميع الخطط المرسلة والمتأخرة</div></div>
-      <div class="feat-card"><div class="feat-icon">📱</div><div class="feat-title">إشعارات واتساب</div><div class="feat-desc">إرسال الروابط للمعلمين مباشرة عبر واتساب</div></div>
-      <div class="feat-card"><div class="feat-icon">📢</div><div class="feat-title">التعاميم</div><div class="feat-desc">إرسال التعاميم ومتابعة الاطلاع عليها</div></div>
-      <div class="feat-card"><div class="feat-icon">📅</div><div class="feat-title">جدول دراسي</div><div class="feat-desc">جميع الأسابيع بالتواريخ الهجرية والميلادية</div></div>
+      <div class="feat-card">
+        <div class="sq sq-y"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+        <h3>جدول دراسي كامل</h3>
+        <p>أسابيع الفصل بالتاريخ الهجري والميلادي، جاهزة للإسناد وإرسال الروابط للمعلمين.</p>
+        <span class="more">36 أسبوعاً جاهزاً</span>
+      </div>
+      <div class="feat-card">
+        <div class="sq sq-g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg></div>
+        <h3>إشعارات واتساب</h3>
+        <p>إرسال الروابط مباشرة دون الحاجة لتثبيت تطبيق — يعمل مع أرقام المعلمين الحالية.</p>
+        <span class="more">اختصار في وقت المتابعة</span>
+      </div>
+      <div class="feat-card">
+        <div class="sq sq-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h3>التعاميم الموثّقة</h3>
+        <p>أرسل التعميم وتابع من اطّلع عليه ومن لم يطّلع — سجل مرجعي قابل للتصدير كـ PDF.</p>
+        <span class="more">سجلّ كامل قابل للأرشفة</span>
+      </div>
+      <div class="feat-card">
+        <div class="sq sq-r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+        <h3>تقارير أسبوعية</h3>
+        <p>تقرير الالتزام لكل أسبوع — من سلّم خطته ومن تأخر، مع تصدير PDF للإدارة.</p>
+        <span class="more">جاهز لاجتماعات المتابعة</span>
+      </div>
     </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><div class="num" id="landSchools">0</div><div class="lbl">مدرسة مسجّلة</div></div>
+    <div class="stat"><div class="num">36</div><div class="lbl">أسبوعاً دراسياً</div></div>
+    <div class="stat"><div class="num">PDF</div><div class="lbl">تصدير التقارير</div></div>
+    <div class="stat"><div class="num"><span class="accent">مجاني</span></div><div class="lbl">للمرحلة الحالية</div></div>
   </div>
-  <div class="stats-bar">
-    <div><div class="stat-n" id="landSchools">0</div><div class="stat-l">مدرسة مسجلة</div></div>
-    <div><div class="stat-n">مجاني</div><div class="stat-l">للمرحلة الحالية</div></div>
-  </div>
-  <div class="land-footer">
-    منصة رابط للإدارة المدرسية © 2026 — جميع الحقوق محفوظة
-    <br>
-    <button onclick="doAdminLogin()" style="background:none;border:none;color:rgba(255,255,255,0.3);font-size:11px;cursor:pointer;font-family:inherit;margin-top:6px">لوحة التحكم</button>
-  </div>
+
+  <!-- SELF-EVALUATION DOMAINS -->
+  <section class="exp" id="stories">
+    <div class="exp-head" style="text-align:center">
+      <div class="kicker">التقويم الذاتي</div>
+      <h2>مجالات التقويم الأربعة</h2>
+    </div>
+    <div class="feat-grid" style="max-width:1180px;margin:0 auto">
+      <div class="feat-card">
+        <div class="sq sq-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 9h1M9 13h1M9 17h1M14 9h1M14 13h1M14 17h1"/></svg></div>
+        <h3>شواهد ونماذج مجال الإدارة المدرسية</h3>
+      </div>
+      <div class="feat-card">
+        <div class="sq sq-g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg></div>
+        <h3>شواهد ونماذج مجال البيئة المدرسية</h3>
+      </div>
+      <div class="feat-card">
+        <div class="sq sq-y"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <h3>شواهد ونماذج مجال التعليم والتعلم</h3>
+      </div>
+      <div class="feat-card">
+        <div class="sq sq-r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg></div>
+        <h3>شواهد ونماذج مجال نواتج التعلم</h3>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px;font-size:12px;color:var(--soft);font-weight:500">⚠️ هذا القسم تحت الإنشاء</div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="lfoot" id="footer-support">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="name">منصة رابط</div>
+        <p>منصة سعودية متكاملة لمتابعة خطط الدروس والتعاميم، مصمّمة للمدارس بمختلف مراحلها.</p>
+      </div>
+      <div class="foot-col">
+        <h4>المنصة</h4>
+        <a href="#features">المميزات</a>
+        <a href="#stories">قصص المدارس</a>
+        <a href="#" onclick="showModal('mdlRegister');return false">تسجيل مدرسة</a>
+      </div>
+      <div class="foot-col">
+        <h4>المدارس</h4>
+        <a href="#" onclick="showModal('mdlRegister');return false">تسجيل مدرسة</a>
+        <a href="#" onclick="showModal('mdlLogin');return false">دخول المدير</a>
+        <a href="#">المساعدة</a>
+      </div>
+      <div class="foot-col">
+        <h4>الدعم</h4>
+        <a href="#">واتساب الدعم</a>
+        <a href="#">سياسة الخصوصية</a>
+        <a href="#">الشروط</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <div>منصة رابط للإدارة المدرسية © 2026 — جميع الحقوق محفوظة</div>
+      <div style="display:flex;align-items:center;gap:14px">
+        <span>صنع في المملكة العربية السعودية</span>
+        <button class="foot-admin" onclick="doAdminLogin()">لوحة التحكم</button>
+      </div>
+    </div>
+  </footer>
 </div>
 
 <!-- MODAL REGISTER -->
@@ -279,6 +606,30 @@ tr:hover td{background:var(--gb)}
     <div class="divider">أو</div>
     <button class="btn btn-o btn-full" onclick="hideModal('mdlLogin');showModal('mdlRegister')">سجّل مدرستك الآن</button>
     <div style="text-align:center;margin-top:10px"><button onclick="doAdminLogin()" style="background:none;border:none;color:#bbb;font-size:12px;cursor:pointer;font-family:inherit">دخول المشرف العام</button></div>
+  </div>
+</div>
+
+<!-- MODAL LOGIN WAKEEL -->
+<div class="modal-bg hidden" id="mdlLoginWakeel">
+  <div class="modal">
+    <button class="modal-close" onclick="hideModal('mdlLoginWakeel')">✕</button>
+    <h2 id="wkTitle">دخول الوكيل</h2>
+    <p class="modal-desc">أدخل اسم المستخدم وكلمة المرور</p>
+    <div class="form-g"><label>اسم المستخدم</label><input type="text" id="wkUser" placeholder="اسم المستخدم"></div>
+    <div class="form-g"><label>كلمة المرور</label><input type="password" id="wkPass" placeholder="••••••"><div class="err" id="wkErr">اسم المستخدم أو كلمة المرور غير صحيحة</div></div>
+    <button class="btn btn-g btn-full" onclick="doStaffLogin('wakeel')">دخول</button>
+  </div>
+</div>
+
+<!-- MODAL LOGIN MOWAJEH -->
+<div class="modal-bg hidden" id="mdlLoginMowajeh">
+  <div class="modal">
+    <button class="modal-close" onclick="hideModal('mdlLoginMowajeh')">✕</button>
+    <h2>دخول الموجه الطلابي</h2>
+    <p class="modal-desc">أدخل اسم المستخدم وكلمة المرور</p>
+    <div class="form-g"><label>اسم المستخدم</label><input type="text" id="mwUser" placeholder="اسم المستخدم"></div>
+    <div class="form-g"><label>كلمة المرور</label><input type="password" id="mwPass" placeholder="••••••"><div class="err" id="mwErr">اسم المستخدم أو كلمة المرور غير صحيحة</div></div>
+    <button class="btn btn-g btn-full" onclick="doStaffLogin('mowajeh')">دخول</button>
   </div>
 </div>
 
@@ -362,10 +713,8 @@ tr:hover td{background:var(--gb)}
       <button class="nav-tab" onclick="goTab('circulars',this)">📢 التعاميم</button>
       <button class="nav-tab" onclick="goTab('surveys',this)">📋 الاستبانات</button>
       <button class="nav-tab" onclick="goTab('send',this)">📱 إرسال الروابط</button>
-    </div>
-    <div style="display:flex;gap:4px">
-      <button class="nav-tab" onclick="goTab('teachers',this)" style="color:var(--gd)">👨‍🏫 المعلمون</button>
-      <button class="nav-tab" onclick="goTab('parents',this)" style="color:var(--gd)">👨‍👩‍👧 أولياء الأمور</button>
+      <button class="nav-tab" onclick="goTab('teachers',this)">👨‍🏫 المعلمون</button>
+      <button class="nav-tab" onclick="goTab('parents',this)">👨‍👩‍👧 أولياء الأمور</button>
     </div>
   </div>
   <div class="dash-content">
@@ -548,11 +897,13 @@ tr:hover td{background:var(--gb)}
   </div>
 
   <!-- Admin Nav -->
-  <div style="background:#fff;padding:0.7rem 1.5rem;border-bottom:1px solid var(--bd);display:flex;gap:4px;flex-wrap:wrap">
-    <button class="nav-tab active" onclick="adminTab('stats',this)">📊 الإحصائيات</button>
-    <button class="nav-tab" onclick="adminTab('schools',this)">🏫 المدارس</button>
-    <button class="nav-tab" onclick="adminTab('reports',this)">📈 التقارير</button>
-    <button class="nav-tab" onclick="adminTab('settings',this)">⚙️ الإعدادات</button>
+  <div class="nav">
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="adminTab('stats',this)">📊 الإحصائيات</button>
+      <button class="nav-tab" onclick="adminTab('schools',this)">🏫 المدارس</button>
+      <button class="nav-tab" onclick="adminTab('reports',this)">📈 التقارير</button>
+      <button class="nav-tab" onclick="adminTab('settings',this)">⚙️ الإعدادات</button>
+    </div>
   </div>
 
   <div class="dash-content">
@@ -922,6 +1273,37 @@ function doRegister(){
 }
 
 // ====== LOGIN ======
+function toggleSegMenu(el,e){
+  e.preventDefault();e.stopPropagation();
+  var item=el.closest('.seg-item');
+  document.querySelectorAll('#pgLanding .seg-item').forEach(function(s){if(s!==item)s.classList.remove('open');});
+  item.classList.toggle('open');
+}
+function openWakeelLogin(title){
+  document.querySelectorAll('#pgLanding .seg-item').forEach(function(s){s.classList.remove('open');});
+  document.getElementById('wkTitle').textContent=title;
+  document.getElementById('wkErr').style.display='none';
+  document.getElementById('wkUser').value='';
+  document.getElementById('wkPass').value='';
+  showModal('mdlLoginWakeel');
+}
+document.addEventListener('click',function(e){
+  if(!e.target.closest('#pgLanding .seg-item')){
+    document.querySelectorAll('#pgLanding .seg-item').forEach(function(s){s.classList.remove('open');});
+  }
+});
+
+function doStaffLogin(role){
+  var u,p,errEl;
+  if(role==='wakeel'){u='wkUser';p='wkPass';errEl='wkErr';}
+  else{u='mwUser';p='mwPass';errEl='mwErr';}
+  var user=document.getElementById(u).value.trim();
+  var pass=document.getElementById(p).value.trim();
+  var err=document.getElementById(errEl);
+  if(!user||!pass){err.textContent='يرجى تعبئة اسم المستخدم وكلمة المرور';err.style.display='block';return;}
+  err.textContent='هذا القسم قيد التطوير';err.style.display='block';
+}
+
 function doLogin(){
   var code=document.getElementById('lCode').value.trim();
   var pass=document.getElementById('lPass').value.trim();
