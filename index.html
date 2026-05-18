@@ -711,17 +711,30 @@ tr:hover td{background:var(--gb)}
           </select>
         </div>
       </div>
-      <div class="form-row">
-        <div class="form-g">
-          <label>اسم المستخدم</label>
-          <input type="text" id="stfUser" placeholder="مثال: wakeel1">
-        </div>
-        <div class="form-g">
-          <label>كلمة المرور المؤقتة</label>
-          <input type="text" id="stfPass" placeholder="كلمة مرور مؤقتة">
-        </div>
+      <div class="form-g">
+        <label>رقم الجوال (واتساب)</label>
+        <input type="text" id="stfPhone" placeholder="05xxxxxxxx" style="direction:ltr;text-align:right">
       </div>
       <button type="button" onclick="autoGenCredentials()" class="btn btn-o btn-sm" style="margin-bottom:10px;width:100%">🔄 توليد اسم مستخدم وكلمة مرور تلقائياً</button>
+      <div id="stfCredBox" style="display:none;background:#f0f8ff;border:2px solid var(--gl);border-radius:8px;padding:12px;margin-bottom:12px">
+        <div style="font-size:12px;color:var(--tl);margin-bottom:6px;font-weight:600">بيانات الحساب المولّدة</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+          <span style="font-size:12px;color:#555">اسم المستخدم:</span>
+          <span id="stfUserShow" style="font-weight:700;font-size:13px;color:var(--gd);direction:ltr"></span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <span style="font-size:12px;color:#555">كلمة المرور:</span>
+          <span id="stfPassShow" style="font-weight:700;font-size:13px;color:var(--gd);direction:ltr"></span>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button onclick="copyStfCreds()" class="btn btn-o btn-sm" style="flex:1">📋 نسخ البيانات</button>
+          <button onclick="sendStfWa()" class="btn btn-sm" style="flex:1;background:#25d366;color:#fff;border:none;cursor:pointer;font-family:inherit;font-weight:600;border-radius:7px">📱 إرسال واتساب</button>
+        </div>
+      </div>
+      <div style="display:none" id="stfInputs">
+        <input type="hidden" id="stfUser">
+        <input type="hidden" id="stfPass">
+      </div>
       <p id="stfErr" class="err"></p>
       <button class="btn btn-g btn-full" onclick="addStaffAccount()">إضافة الحساب</button>
     </div>
@@ -2397,15 +2410,40 @@ function autoGenCredentials(){
   var prefix=role.includes('تعليمية')?'wakeel_t':role.includes('مدرسية')?'wakeel_m':role.includes('طلاب')?'wakeel_s':'mowajeh';
   var num=Math.floor(1000+Math.random()*9000);
   var pass=Math.random().toString(36).slice(2,6).toUpperCase()+num;
-  document.getElementById('stfUser').value=prefix+'_'+cur.code.replace('SCH-','').toLowerCase()+'_'+num;
+  var user=prefix+'_'+cur.code.replace('SCH-','').toLowerCase()+'_'+num;
+  document.getElementById('stfUser').value=user;
   document.getElementById('stfPass').value=pass;
+  document.getElementById('stfUserShow').textContent=user;
+  document.getElementById('stfPassShow').textContent=pass;
+  document.getElementById('stfCredBox').style.display='block';
+}
+
+function copyStfCreds(){
+  var u=document.getElementById('stfUser').value;
+  var p=document.getElementById('stfPass').value;
+  var name=document.getElementById('stfName').value.trim()||'الموظف';
+  var role=document.getElementById('stfRole').value;
+  var text='بيانات دخول '+name+' ('+role+'):\nاسم المستخدم: '+u+'\nكلمة المرور: '+p+'\n'+location.href.split('#')[0];
+  navigator.clipboard.writeText(text).then(function(){alert('تم النسخ ✅');}).catch(function(){prompt('انسخ البيانات:',text);});
+}
+
+function sendStfWa(){
+  var u=document.getElementById('stfUser').value;
+  var p=document.getElementById('stfPass').value;
+  var name=document.getElementById('stfName').value.trim()||'الموظف';
+  var role=document.getElementById('stfRole').value;
+  var phone=document.getElementById('stfPhone').value.trim();
+  var msg='السلام عليكم '+name+'،\nبيانات دخولك لمنصة رابط ('+role+'):\nاسم المستخدم: '+u+'\nكلمة المرور: '+p+'\nالرابط: '+location.href.split('#')[0]+'\nيرجى تغيير كلمة المرور بعد أول دخول.\nإدارة '+cur.name;
+  var url=phone?'https://wa.me/'+phone.replace(/^0/,'966')+'?text='+encodeURIComponent(msg):'https://wa.me/?text='+encodeURIComponent(msg);
+  window.open(url,'_blank');
 }
 
 function openStaffModal(){
   renderStaffList();
   document.getElementById('stfName').value='';
+  document.getElementById('stfPhone').value='';
   document.getElementById('stfErr').style.display='none';
-  autoGenCredentials();
+  document.getElementById('stfCredBox').style.display='none';
   showModal('mdlStaffAccounts');
 }
 
@@ -2426,19 +2464,20 @@ function renderStaffList(){
 function addStaffAccount(){
   var name=document.getElementById('stfName').value.trim();
   var role=document.getElementById('stfRole').value;
-  var user=document.getElementById('stfUser').value.trim();
-  var pass=document.getElementById('stfPass').value.trim();
+  var user=document.getElementById('stfUser').value.trim()||document.getElementById('stfUserShow').textContent.trim();
+  var pass=document.getElementById('stfPass').value.trim()||document.getElementById('stfPassShow').textContent.trim();
+  var phone=document.getElementById('stfPhone').value.trim();
   var err=document.getElementById('stfErr');
   err.style.display='none';
   if(!name||!user||!pass){err.style.display='block';err.textContent='يرجى تعبئة جميع الحقول';return;}
   var d=initSD(cur.code);
   if(!d.staff) d.staff=[];
   if(d.staff.find(function(s){return s.user===user;})){err.style.display='block';err.textContent='اسم المستخدم مستخدم مسبقاً';return;}
-  d.staff.push({name:name,role:role,user:user,pass:pass,firstLogin:true});
+  d.staff.push({name:name,role:role,user:user,pass:pass,phone:phone,firstLogin:true});
   setSD(cur.code,d);
   document.getElementById('stfName').value='';
-  document.getElementById('stfUser').value='';
-  document.getElementById('stfPass').value='';
+  document.getElementById('stfPhone').value='';
+  document.getElementById('stfCredBox').style.display='none';
   renderStaffList();
   alert('تم إنشاء الحساب ✅');
 }
