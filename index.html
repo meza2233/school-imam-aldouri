@@ -703,8 +703,9 @@ tr:hover td{background:var(--gb)}
         </div>
         <div class="form-g">
           <label>الدور</label>
-          <select id="stfRole">
+          <select id="stfRole" onchange="autoGenCredentials()">
             <option value="وكيل الشؤون التعليمية">وكيل الشؤون التعليمية</option>
+            <option value="وكيل الشؤون المدرسية">وكيل الشؤون المدرسية</option>
             <option value="وكيل شؤون الطلاب">وكيل شؤون الطلاب</option>
             <option value="الموجه الطلابي">الموجه الطلابي</option>
           </select>
@@ -720,6 +721,7 @@ tr:hover td{background:var(--gb)}
           <input type="text" id="stfPass" placeholder="كلمة مرور مؤقتة">
         </div>
       </div>
+      <button type="button" onclick="autoGenCredentials()" class="btn btn-o btn-sm" style="margin-bottom:10px;width:100%">🔄 توليد اسم مستخدم وكلمة مرور تلقائياً</button>
       <p id="stfErr" class="err"></p>
       <button class="btn btn-g btn-full" onclick="addStaffAccount()">إضافة الحساب</button>
     </div>
@@ -2354,12 +2356,20 @@ function clearSubs(){
   var d=getSD(cur.code);d.submissions=[];setSD(cur.code,d);renderReport();alert('تم المسح ✅');
 }
 
+function autoGenCredentials(){
+  var role=document.getElementById('stfRole').value;
+  var prefix=role.includes('تعليمية')?'wakeel_t':role.includes('مدرسية')?'wakeel_m':role.includes('طلاب')?'wakeel_s':'mowajeh';
+  var num=Math.floor(1000+Math.random()*9000);
+  var pass=Math.random().toString(36).slice(2,6).toUpperCase()+num;
+  document.getElementById('stfUser').value=prefix+'_'+cur.code.replace('SCH-','').toLowerCase()+'_'+num;
+  document.getElementById('stfPass').value=pass;
+}
+
 function openStaffModal(){
   renderStaffList();
   document.getElementById('stfName').value='';
-  document.getElementById('stfUser').value='';
-  document.getElementById('stfPass').value='';
   document.getElementById('stfErr').style.display='none';
+  autoGenCredentials();
   showModal('mdlStaffAccounts');
 }
 
