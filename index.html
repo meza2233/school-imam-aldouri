@@ -1381,8 +1381,44 @@ function doStaffLogin(role){
   var user=document.getElementById(u).value.trim();
   var pass=document.getElementById(p).value.trim();
   var err=document.getElementById(errEl);
+  err.style.display='none';
   if(!user||!pass){err.textContent='يرجى تعبئة اسم المستخدم وكلمة المرور';err.style.display='block';return;}
-  err.textContent='هذا القسم قيد التطوير';err.style.display='block';
+  var found=null,foundSchool=null;
+  schools.forEach(function(s){
+    var d=getSD(s.code);
+    if(!d||!d.staff) return;
+    var m=d.staff.find(function(st){return st.user===user&&st.pass===pass;});
+    if(m){found=m;foundSchool=s;}
+  });
+  if(!found){
+    fbRead('pt_schools').then(function(fbSch){
+      if(!fbSch) return;
+      var sList=Array.isArray(fbSch)?fbSch:Object.values(fbSch);
+      var foundFB=null,foundSchoolFB=null;
+      var checks=sList.map(function(s){
+        return fbRead('pt_'+s.code).then(function(d){
+          var nd=normalizeSD(d);
+          if(nd&&nd.staff){
+            var m=nd.staff.find(function(st){return st.user===user&&st.pass===pass;});
+            if(m){foundFB=m;foundSchoolFB=s;}
+          }
+        });
+      });
+      Promise.all(checks).then(function(){
+        if(foundFB){
+          cur=foundSchoolFB;
+          hideModal(role==='wakeel'?'mdlLoginWakeel':'mdlLoginMowajeh');
+          alert('مرحباً '+foundFB.name+' — سيتم إنشاء لوحة التحكم قريباً');
+        } else {
+          err.textContent='اسم المستخدم أو كلمة المرور غير صحيحة';err.style.display='block';
+        }
+      });
+    });
+    return;
+  }
+  cur=foundSchool;
+  hideModal(role==='wakeel'?'mdlLoginWakeel':'mdlLoginMowajeh');
+  alert('مرحباً '+found.name+' — سيتم إنشاء لوحة التحكم قريباً');
 }
 
 function doLogin(){
